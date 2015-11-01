@@ -34,31 +34,8 @@ include (FindDoxygen)
 include (FindPythonInterp)
 include (FindPythonLibs)
 
-#include (FindQt4)
-#find_package(Qt4 4.8.0 REQUIRED QtCore QtGui QtXml)
-#include(${QT_USE_FILE})
-
-#set( CMAKE_INCLUDE_CURRENT_DIR ON )
-#find_package(Qt5Widgets)
-#find_package(OpenGL)
-
-#find_package(TCL)
-
-find_package (GTest)
-
-#include (FindGMP)
-
-#include (FindPOPT)
-
-#include (FindReadline)
-
 find_package(Gperftools)
-
 find_package(YmTools REQUIRED)
-
-#if (TCL_FOUND)
-#  find_package(YmTclpp)
-#endif (TCL_FOUND)
 
 include (ym_add_library)
 
