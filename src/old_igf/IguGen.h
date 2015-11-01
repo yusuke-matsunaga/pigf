@@ -59,8 +59,8 @@ public:
   /// @param[in] limit_min 制限の分の部分
   /// @param[in] limit_sec 制限の秒の部分
   void
-  set_time_limit(ymuint32 limit_min,
-		 ymuint32 limit_sec = 0);
+  set_time_limit(ymuint limit_min,
+		 ymuint limit_sec = 0);
 
   /// @brief 順序付けのヒューリスティックを指定する．
   void
@@ -68,7 +68,7 @@ public:
 
   /// @brief デバッグレベルを指定する．
   void
-  set_debug_level(ymuint32 level);
+  set_debug_level(ymuint level);
 
 
 public:
@@ -97,28 +97,28 @@ private:
   //////////////////////////////////////////////////////////////////////
 
   // 多重度
-  ymuint32 mMulti;
+  ymuint mMulti;
 
   // 現在のビットベクタ長
-  ymuint32 mVectorLength;
+  ymuint mVectorLength;
 
   // 現在のベクターリスト
   vector<const RegVect*> mVectorList;
 
   // 現時点の最適値
-  ymuint32 mBestSoFar;
+  ymuint mBestSoFar;
 
   // mBestSorFar がセットされた．
   bool mBeforeHasSolution;
 
   // mBestSoFar が更新されていない回数
-  ymuint32 mNoChangeCount;
+  ymuint mNoChangeCount;
 
   // mNoChangeCount の制限値
-  ymuint32 mNoChangeLimit;
+  ymuint mNoChangeLimit;
 
   // mNoChangeCount の最大値
-  ymuint32 mMaxNoChangeCount;
+  ymuint mMaxNoChangeCount;
 
   // 現時点の解
   vector<const Variable*> mSolutionSoFar;
@@ -127,13 +127,13 @@ private:
   vector<const Variable*> mSelectedVariables;
 
   // 順序づけのヒューリスティック
-  ymuint32 mOrderingMode;
+  ymuint mOrderingMode;
 
   // 時間制限
-  ymuint32 mTimeLimit;
+  ymuint mTimeLimit;
 
   // デバッグフラグ
-  ymuint32 mDebug;
+  ymuint mDebug;
 
 };
 

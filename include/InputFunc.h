@@ -43,7 +43,7 @@ public:
   /// @brief 関数値を求める．
   /// @param[in] rv 登録ベクタ
   virtual
-  ymuint32
+  ymuint
   eval(const RegVect* rv) const = 0;
 
   /// @brief 内容を表示する．

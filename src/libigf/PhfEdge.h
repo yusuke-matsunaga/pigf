@@ -61,10 +61,10 @@ private:
   //////////////////////////////////////////////////////////////////////
 
   // ID 番号
-  ymuint32 mId;
+  ymuint mId;
 
   // 値
-  ymuint32 mVal;
+  ymuint mVal;
 
   // アクティブフラグ
   bool mActive;

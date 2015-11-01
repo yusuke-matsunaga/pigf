@@ -66,7 +66,7 @@ private:
   Bdd mDsFunc;
 
   // mDsFunc の要素数
-  ymuint32 mDsCount;
+  ymuint mDsCount;
 
 };
 

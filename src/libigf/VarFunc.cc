@@ -19,7 +19,7 @@ BEGIN_NAMESPACE_YM_IGF
 
 // @brief コンストラクタ
 // @param[in] var_list 変数のリスト
-VarFunc::VarFunc(const vector<ymuint32>& var_list) :
+VarFunc::VarFunc(const vector<ymuint>& var_list) :
   mVarList(var_list)
 {
 }
@@ -37,10 +37,10 @@ VarFunc::output_num() const
 }
 
 // @brief 関数値を求める．
-ymuint32
+ymuint
 VarFunc::eval(const RegVect* rv) const
 {
-  ymuint32 v = 0U;
+  ymuint v = 0U;
   ymuint n = mVarList.size();
   for (ymuint i = 0; i < n; ++ i) {
     ymuint pos = mVarList[i];

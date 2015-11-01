@@ -53,19 +53,19 @@ phf(int argc,
     return -1;
   }
 
-  ymuint32 comp = 1;
+  ymuint comp = 1;
   if ( popt_xor.is_specified() ) {
     comp = popt_xor.val();
   }
 
-  ymuint32 m = 2;
+  ymuint m = 2;
   if ( popt_m.is_specified() ) {
     m = popt_m.val();
   }
 
   bool disp = popt_d.is_specified();
 
-  ymuint32 count_limit = 1000;
+  ymuint count_limit = 1000;
   if ( popt_count.is_specified() ) {
     count_limit = popt_count.val();
   }
@@ -123,7 +123,7 @@ phf(int argc,
 
       IguGen phfgen;
 
-      vector<vector<ymuint32> > g_list(m);
+      vector<vector<ymuint> > g_list(m);
       bool stat = phfgen.mapping(func_list, g_list);
       if ( stat ) {
 	found = true;
@@ -136,11 +136,11 @@ phf(int argc,
 	  for (ymuint i = 0; i < nv; ++ i) {
 	    cout << "#" << i << ": ";
 	    const char* comma = "";
-	    ymuint32 val = 0;
+	    ymuint val = 0;
 	    for (ymuint j = 0; j < m; ++ j) {
 	      const FuncVect& f1 = *func_list[j];
-	      vector<ymuint32>& g1 = g_list[j];
-	      ymuint32 v1 = f1.val(i);
+	      vector<ymuint>& g1 = g_list[j];
+	      ymuint v1 = f1.val(i);
 	      cout << comma << setw(6) << v1 << " = " << g1[v1];
 	      val ^= g1[v1];
 	      comma = ", ";

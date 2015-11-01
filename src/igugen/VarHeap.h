@@ -80,7 +80,7 @@ private:
   struct Node
   {
     Variable* mVar;
-    ymuint32 mValue;
+    ymuint mValue;
   };
 
 
@@ -116,13 +116,13 @@ private:
   //////////////////////////////////////////////////////////////////////
 
   // mHeap の実際の大きさ
-  ymuint32 mHeapSize;
+  ymuint mHeapSize;
 
   // 変数のヒープ木
   Node* mHeap;
 
   // ヒープ木中にある変数の数
-  ymuint32 mVarNum;
+  ymuint mVarNum;
 
 };
 

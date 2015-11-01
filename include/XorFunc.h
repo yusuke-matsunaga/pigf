@@ -25,7 +25,7 @@ public:
 
   /// @brief コンストラクタ
   /// @param[in] vars_list 変数のリストのリスト
-  XorFunc(const vector<vector<ymuint32> >& vars_list);
+  XorFunc(const vector<vector<ymuint> >& vars_list);
 
   /// @brief デストラクタ
   virtual
@@ -45,7 +45,7 @@ public:
   /// @brief 関数値を求める．
   /// @param[in] rv 登録ベクタ
   virtual
-  ymuint32
+  ymuint
   eval(const RegVect* rv) const;
 
   /// @brief 内容を表示する．
@@ -61,7 +61,7 @@ private:
   //////////////////////////////////////////////////////////////////////
 
   // 変数のリスト
-  vector<vector<ymuint32> > mVarsList;
+  vector<vector<ymuint> > mVarsList;
 
 };
 

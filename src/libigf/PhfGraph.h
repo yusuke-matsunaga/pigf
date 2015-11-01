@@ -78,12 +78,12 @@ private:
 
   /// @brief ノードを生成する．
   PhfNode*
-  new_node(ymuint32 pat);
+  new_node(ymuint pat);
 
   /// @brief 枝を生成する．
   PhfEdge*
   new_edge(ymuint id,
-	   ymuint32 val);
+	   ymuint val);
 
 
 private:
@@ -95,22 +95,22 @@ private:
   SimpleAlloc mAlloc;
 
   // 現在のグラフ次数(枝に接続するノード数)
-  ymuint32 mDegree;
+  ymuint mDegree;
 
   // ノードの次の ID 番号
-  ymuint32 mMaxId;
+  ymuint mMaxId;
 
   // ノード番号をキーにしたノードの配列
   PhfNode** mNodeList;
 
   // mNodeArray のサイズ
-  ymuint32 mNodeArraySize;
+  ymuint mNodeArraySize;
 
   // パタンをキーにしたノードの配列
   PhfNode** mNodeArray;
 
   // mEdgeList のサイズ
-  ymuint32 mEdgeListSize;
+  ymuint mEdgeListSize;
 
   // 生成した枝を入れておくリスト
   PhfEdge** mEdgeList;

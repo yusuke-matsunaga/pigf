@@ -57,8 +57,8 @@ phf(int argc,
     return -1;
   }
 
-  ymuint32 comp = 1;
-  ymuint32 rlimit = 0;
+  ymuint comp = 1;
+  ymuint rlimit = 0;
 
   if ( popt_xor.is_specified() ) {
     comp = popt_xor.val();
@@ -135,9 +135,9 @@ phf(int argc,
       ymuint exp_p = 1U << p;
       vector<const FuncVect*> func_list(3);
       { // f1 と f2 と f3 を作る．
-	vector<vector<ymuint32> > f1_vect(p);
-	vector<vector<ymuint32> > f2_vect(p);
-	vector<vector<ymuint32> > f3_vect(p);
+	vector<vector<ymuint> > f1_vect(p);
+	vector<vector<ymuint> > f2_vect(p);
+	vector<vector<ymuint> > f3_vect(p);
 	if ( ns < p ) {
 	  // ほとんど無意味だけど一応用意しておく．
 	  for (ymuint k = 0; k < ns; ++ k) {
@@ -215,7 +215,7 @@ phf(int argc,
 
       PhfGen phfgen;
 
-      vector<vector<ymuint32> > g_list(3);
+      vector<vector<ymuint> > g_list(3);
       bool stat1 = phfgen.mapping(func_list, g_list);
 
       {
@@ -234,11 +234,11 @@ phf(int argc,
 	  for (ymuint i = 0; i < nv; ++ i) {
 	    cout << "#" << i << ": ";
 	    const char* comma = "";
-	    ymuint32 val = 0;
+	    ymuint val = 0;
 	    for (ymuint j = 0; j < 3; ++ j) {
 	      const FuncVect& f1 = *func_list[j];
-	      vector<ymuint32>& g1 = g_list[j];
-	      ymuint32 v1 = f1.val(i);
+	      vector<ymuint>& g1 = g_list[j];
+	      ymuint v1 = f1.val(i);
 	      cout << comma << setw(6) << v1 << " = " << g1[v1];
 	      val ^= g1[v1];
 	      comma = ", ";

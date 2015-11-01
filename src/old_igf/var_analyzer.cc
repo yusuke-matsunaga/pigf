@@ -62,12 +62,12 @@ igf(int argc,
     return -1;
   }
 
-  ymuint32 slack = 0;
+  ymuint slack = 0;
   if ( popt_slack.is_specified() ) {
     slack = popt_slack.val();
   }
 
-  ymuint32 comp = 1;
+  ymuint comp = 1;
   if ( popt_xor.is_specified() ) {
     comp = popt_xor.val();
   }

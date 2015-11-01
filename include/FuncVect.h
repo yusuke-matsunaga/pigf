@@ -71,13 +71,14 @@ private:
   //////////////////////////////////////////////////////////////////////
 
   // 入力の要素数
-  ymuint32 mInputSize;
+  ymuint mInputSize;
 
   // 出力値の最大値 + 1
-  ymuint32 mMaxVal;
+  ymuint mMaxVal;
 
   // 値のベクタ
-  ymuint32* mVector;
+  // サイズは mInputSize
+  ymuint* mVector;
 
 };
 
@@ -93,7 +94,7 @@ FuncVect::FuncVect(ymuint input_size,
   mInputSize(input_size),
   mMaxVal(max_val)
 {
-  mVector = new ymuint32[mInputSize];
+  mVector = new ymuint[mInputSize];
 }
 
 // @brief デストラクタ

@@ -19,7 +19,7 @@ BEGIN_NAMESPACE_YM_IGF
 
 // @brief コンストラクタ
 // @param[in] vars_list 変数のリストのリスト
-XorFunc::XorFunc(const vector<vector<ymuint32> >& vars_list) :
+XorFunc::XorFunc(const vector<vector<ymuint> >& vars_list) :
   mVarsList(vars_list)
 {
 }
@@ -38,13 +38,13 @@ XorFunc::output_width() const
 
 // @brief 関数値を求める．
 // @param[in] rv 登録ベクタ
-ymuint32
+ymuint
 XorFunc::eval(const RegVect* rv) const
 {
-  ymuint32 v = 0U;
+  ymuint v = 0U;
   ymuint n = mVarsList.size();
   for (ymuint i = 0; i < n; ++ i) {
-    const vector<ymuint32>& vars = mVarsList[i];
+    const vector<ymuint>& vars = mVarsList[i];
     ymuint nv = vars.size();
     bool iv = false;
     for (ymuint j = 0; j < nv; ++ j) {
@@ -69,7 +69,7 @@ XorFunc::dump(ostream& s) const
   s << "{";
   const char* comma = "";
   for (ymuint i = 0; i < n; ++ i) {
-    const vector<ymuint32>& vars = mVarsList[i];
+    const vector<ymuint>& vars = mVarsList[i];
     ymuint nv = vars.size();
     s << comma << "{";
     comma = ", ";

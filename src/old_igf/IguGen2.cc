@@ -150,15 +150,15 @@ IguGen2::set_branch_limit(ymuint limit)
 // @param[in] limit_min 制限の分の部分
 // @param[in] limit_sec 制限の秒の部分
 void
-IguGen2::set_time_limit(ymuint32 limit_min,
-			ymuint32 limit_sec)
+IguGen2::set_time_limit(ymuint limit_min,
+			ymuint limit_sec)
 {
   mTimeLimit = limit_min * 60 + limit_sec;
 }
 
 // @brief デバッグレベルを指定する．
 void
-IguGen2::set_debug_level(ymuint32 level)
+IguGen2::set_debug_level(ymuint level)
 {
   mDebug = level;
 }

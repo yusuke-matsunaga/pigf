@@ -64,12 +64,12 @@ igf(int argc,
     return -1;
   }
 
-  ymuint32 multi = 1;
-  ymuint32 comp = 1;
-  ymuint32 rlimit = 0;
-  ymuint32 omode = 0;
-  ymuint32 tlimit = 0;
-  ymuint32 debug = 0;
+  ymuint multi = 1;
+  ymuint comp = 1;
+  ymuint rlimit = 0;
+  ymuint omode = 0;
+  ymuint tlimit = 0;
+  ymuint debug = 0;
 
   if ( popt_multi.is_specified() ) {
     multi = popt_multi.val();

@@ -71,13 +71,13 @@ private:
   //////////////////////////////////////////////////////////////////////
 
   // 入力のビット幅
-  ymuint32 mInputWidth;
+  ymuint mInputWidth;
 
   // シグネチャのビット幅
-  ymuint32 mSignatureWidth;
+  ymuint mSignatureWidth;
 
   // インデックスのビット幅
-  ymuint32 mIndexWidth;
+  ymuint mIndexWidth;
 
   // ベクタ表
   // サイズは 2^mSignatureWidth

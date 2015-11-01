@@ -315,12 +315,12 @@ igugen(int argc,
 	}
 	else {
 	  rcg1.generate(rg);
-	  vector<vector<ymuint32> > vars_list;
+	  vector<vector<ymuint> > vars_list;
 	  for (ymuint j = 0; j < p1; ++ j) {
 	    ymuint idx = rcg1.elem(j);
 	    Variable* var1 = var_list[idx];
 	    const vector<ymuint>& vid_list = var1->vid_list();
-	    vars_list.push_back(vector<ymuint32>(vid_list.size()));
+	    vars_list.push_back(vector<ymuint>(vid_list.size()));
 	    for (ymuint k = 0; k < vid_list.size(); ++ k) {
 	      vars_list[j][k] = vid_list[k];
 	    }

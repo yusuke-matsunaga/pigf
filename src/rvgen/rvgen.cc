@@ -31,7 +31,7 @@ public:
   /// @brief シードで初期化する．
   /// @param[in] seed 初期化で用いるシード
   void
-  init(ymuint32 seed);
+  init(ymuint seed);
 
   /// @brief 0/1 の乱数を発生させる．
   bool
@@ -50,10 +50,10 @@ private:
   double mProb;
 
   // 一時バッファ
-  ymuint32 mBuffer;
+  ymuint mBuffer;
 
   // バッファ中の次に利用可能な位置
-  ymuint32 mNextPos;
+  ymuint mNextPos;
 
 };
 
@@ -74,7 +74,7 @@ BinaryRandGen::~BinaryRandGen()
 // @brief シードで初期化する．
 // @param[in] seed 初期化で用いるシード
 void
-BinaryRandGen::init(ymuint32 seed)
+BinaryRandGen::init(ymuint seed)
 {
   mRandGen.init(seed);
 }

@@ -29,7 +29,7 @@ public:
   /// @param[in] id ID番号
   /// @param[in] pat パタン
   PhfNode(ymuint id,
-	  ymuint32 pat);
+	  ymuint pat);
 
   /// @brief デストラクタ
   ~PhfNode();
@@ -45,7 +45,7 @@ public:
   id() const;
 
   /// @brief パタンを返す．
-  ymuint32
+  ymuint
   pat() const;
 
   /// @brief 接続している枝の数を返す．
@@ -77,7 +77,7 @@ public:
 
   /// @brief 値を設定する．
   void
-  set_val(ymuint32 val);
+  set_val(ymuint val);
 
 
 private:
@@ -86,16 +86,16 @@ private:
   //////////////////////////////////////////////////////////////////////
 
   // ノード ID
-  ymuint32 mId;
+  ymuint mId;
 
   // パタン
-  ymuint32 mPat;
+  ymuint mPat;
 
   // 接続している枝のリスト
   vector<PhfEdge*> mEdgeList;
 
   // このノードの値
-  ymuint32 mVal;
+  ymuint mVal;
 
   // active フラグ
   bool mActive;
@@ -114,7 +114,7 @@ private:
 // @param[in] pat パタン
 inline
 PhfNode::PhfNode(ymuint id,
-		 ymuint32 pat)
+		 ymuint pat)
 {
   mId = id;
   mPat = pat;
@@ -138,7 +138,7 @@ PhfNode::id() const
 
 // @brief パタンを返す．
 inline
-ymuint32
+ymuint
 PhfNode::pat() const
 {
   return mPat;
@@ -189,7 +189,7 @@ PhfNode::add_edge(PhfEdge* edge)
 // @brief 値を設定する．
 inline
 void
-PhfNode::set_val(ymuint32 val)
+PhfNode::set_val(ymuint val)
 {
   ASSERT_COND( mAssigned == false );
   mVal = val;

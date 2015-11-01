@@ -35,7 +35,7 @@ phf_sim1(const vector<const FuncVect*>& func_list)
 {
   IguGen pg;
 
-  vector<vector<ymuint32> > g_list;
+  vector<vector<ymuint> > g_list;
   return pg.mapping(func_list, g_list);
 }
 

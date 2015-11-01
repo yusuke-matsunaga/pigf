@@ -115,13 +115,13 @@ private:
   //////////////////////////////////////////////////////////////////////
 
   // ベクタのサイズ
-  ymuint32 mVectSize;
+  ymuint mVectSize;
 
   // ブロックサイズ
-  ymuint32 mBlockSize;
+  ymuint mBlockSize;
 
   // RegVect のサイズ
-  ymuint32 mRvSize;
+  ymuint mRvSize;
 
   // メモリを確保するためのオブジェクト
   UnitAlloc* mAlloc;

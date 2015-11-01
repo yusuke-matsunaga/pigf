@@ -35,7 +35,7 @@ IguGen::~IguGen()
 // @param[out] g_list マッピングのリスト
 bool
 IguGen::mapping(const vector<const FuncVect*>& func_list,
-		vector<vector<ymuint32> >& g_list)
+		vector<vector<ymuint> >& g_list)
 {
   PhfGraph pg(func_list);
 
@@ -51,7 +51,7 @@ IguGen::mapping(const vector<const FuncVect*>& func_list,
   ymuint nf = func_list.size();
   ymuint nv = func_list[0]->max_val();
   g_list.clear();
-  g_list.resize(nf, vector<ymuint32>(nv, 0U));
+  g_list.resize(nf, vector<ymuint>(nv, 0U));
 
   ymuint d = func_list.size();
   ymuint ne = edge_list.size();
@@ -60,7 +60,7 @@ IguGen::mapping(const vector<const FuncVect*>& func_list,
     for (ymuint j = 0; j < d; ++ j) {
       PhfNode* node1 = edge->node(j);
       if ( !node1->is_assigned() ) {
-	ymuint32 val = edge->val();
+	ymuint val = edge->val();
 	for (ymuint k = 0; k < d; ++ k) {
 	  if ( k != j ) {
 	    PhfNode* node2 = edge->node(k);
@@ -68,7 +68,7 @@ IguGen::mapping(const vector<const FuncVect*>& func_list,
 	  }
 	}
 	node1->set_val(val);
-	vector<ymuint32>& g1 = g_list[j];
+	vector<ymuint>& g1 = g_list[j];
 	g1[node1->pat()] = val;
       }
     }

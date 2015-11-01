@@ -43,12 +43,12 @@ phf(int argc,
     return -1;
   }
 
-  ymuint32 comp = 1;
+  ymuint comp = 1;
   if ( popt_xor.is_specified() ) {
     comp = popt_xor.val();
   }
 
-  ymuint32 count_limit = 1000;
+  ymuint count_limit = 1000;
   if ( popt_count.is_specified() ) {
     count_limit = popt_count.val();
   }

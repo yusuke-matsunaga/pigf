@@ -409,7 +409,7 @@ PhfGraph::gen_graph(const vector<const FuncVect*>& func_list)
     PhfEdge* edge = new_edge(v_pos, v_pos);
     for (ymuint f_pos = 0; f_pos < nf; ++ f_pos) {
       const FuncVect& f1 = *func_list[f_pos];
-      ymuint32 pat1 = f1.val(v_pos);
+      ymuint pat1 = f1.val(v_pos);
 
       PhfNode* node1 = mNodeArray[pat1 + f_pos * orange];
       if ( node1 == NULL ) {
@@ -566,7 +566,7 @@ PhfGraph::clear()
 
 // @brief ノードを生成する．
 PhfNode*
-PhfGraph::new_node(ymuint32 pat)
+PhfGraph::new_node(ymuint pat)
 {
   ymuint id = mMaxId;
   ++ mMaxId;
@@ -579,7 +579,7 @@ PhfGraph::new_node(ymuint32 pat)
 // @brief 枝を生成する．
 PhfEdge*
 PhfGraph::new_edge(ymuint id,
-		   ymuint32 val)
+		   ymuint val)
 {
   void* p = mAlloc.get_memory(sizeof(PhfEdge) + sizeof(PhfNode*) * (mDegree - 1));
   PhfEdge* edge = new (p) PhfEdge(id, val);

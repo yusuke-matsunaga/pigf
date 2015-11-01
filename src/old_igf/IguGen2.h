@@ -62,12 +62,12 @@ public:
   /// @param[in] limit_min 制限の分の部分
   /// @param[in] limit_sec 制限の秒の部分
   void
-  set_time_limit(ymuint32 limit_min,
-		 ymuint32 limit_sec = 0);
+  set_time_limit(ymuint limit_min,
+		 ymuint limit_sec = 0);
 
   /// @brief デバッグレベルを指定する．
   void
-  set_debug_level(ymuint32 level);
+  set_debug_level(ymuint level);
 
 
 private:
@@ -134,7 +134,7 @@ private:
   UnitAlloc mAlloc;
 
   // 現在のビットベクタ長
-  ymuint32 mVectorLength;
+  ymuint mVectorLength;
 
   // 現在のベクターリスト
   vector<const RegVect*> mVectorList;
@@ -143,10 +143,10 @@ private:
   Bdd mDsAll;
 
   // mDsAll の要素数
-  ymuint32 mDsAllCount;
+  ymuint mDsAllCount;
 
   // 現時点の最適値
-  ymuint32 mBestSoFar;
+  ymuint mBestSoFar;
 
   // 現時点の解
   vector<const Variable*> mSolutionSoFar;
@@ -155,13 +155,13 @@ private:
   vector<const Variable*> mSelectedVariables;
 
   // いくつの分岐を試すかを制御するパラメータ
-  ymuint32 mBranchLimit;
+  ymuint mBranchLimit;
 
   // 時間制限
-  ymuint32 mTimeLimit;
+  ymuint mTimeLimit;
 
   // デバッグフラグ
-  ymuint32 mDebug;
+  ymuint mDebug;
 
 };
 

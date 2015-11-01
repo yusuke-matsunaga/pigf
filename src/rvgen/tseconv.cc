@@ -99,9 +99,9 @@ tseconv(int argc,
     }
     ostringstream os;
     if ( number_mode ) {
-      ymuint32 num = ((val[0] * 10 + val[1]) * 10 + val[2]) * 10 + val[3];
+      ymuint num = ((val[0] * 10 + val[1]) * 10 + val[2]) * 10 + val[3];
       for (ymuint i = 0; i < 14; ++ i) {
-	ymuint32 mask = (1U << (13 - i));
+	ymuint mask = (1U << (13 - i));
 	if ( num & mask ) {
 	  os << '1';
 	}

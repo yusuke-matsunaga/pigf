@@ -176,7 +176,7 @@ IguGen::mphf(const vector<InputFunc*>& h_funcs,
   ymuint nf = h_funcs.size();
   ymuint nv = func_list[0]->max_val();
   map_list.clear();
-  map_list.resize(nf, vector<ymuint32>(nv, 0U));
+  map_list.resize(nf, vector<ymuint>(nv, 0U));
 
   ymuint ne = edge_list.size();
   for (ymuint i = 0; i < ne; ++ i) {
@@ -184,7 +184,7 @@ IguGen::mphf(const vector<InputFunc*>& h_funcs,
     for (ymuint j = 0; j < nf; ++ j) {
       PhfNode* node1 = edge->node(j);
       if ( !node1->is_assigned() ) {
-	ymuint32 val = edge->val();
+	ymuint val = edge->val();
 	for (ymuint k = 0; k < nf; ++ k) {
 	  if ( k != j ) {
 	    PhfNode* node2 = edge->node(k);
@@ -192,7 +192,7 @@ IguGen::mphf(const vector<InputFunc*>& h_funcs,
 	  }
 	}
 	node1->set_val(val);
-	vector<ymuint32>& g1 = map_list[j];
+	vector<ymuint>& g1 = map_list[j];
 	g1[node1->pat()] = val;
       }
     }

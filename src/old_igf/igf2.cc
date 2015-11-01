@@ -50,10 +50,10 @@ igf(int argc,
     return -1;
   }
 
-  ymuint32 comp = 1;
-  ymuint32 blimit = 0;
-  ymuint32 tlimit = 0;
-  ymuint32 debug = 0;
+  ymuint comp = 1;
+  ymuint blimit = 0;
+  ymuint tlimit = 0;
+  ymuint debug = 0;
 
   if ( popt_xor.is_specified() ) {
     comp = popt_xor.val();

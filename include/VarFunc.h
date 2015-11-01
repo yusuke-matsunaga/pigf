@@ -25,7 +25,7 @@ public:
 
   /// @brief コンストラクタ
   /// @param[in] var_list 変数のリスト
-  VarFunc(const vector<ymuint32>& var_list);
+  VarFunc(const vector<ymuint>& var_list);
 
   /// @brief デストラクタ
   virtual
@@ -44,7 +44,7 @@ public:
 
   /// @brief 関数値を求める．
   virtual
-  ymuint32
+  ymuint
   eval(const RegVect* rv) const;
 
   /// @brief 内容を表示する．
@@ -59,7 +59,7 @@ private:
   //////////////////////////////////////////////////////////////////////
 
   // 変数のリスト
-  vector<ymuint32> mVarList;
+  vector<ymuint> mVarList;
 
 };
 

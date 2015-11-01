@@ -29,7 +29,7 @@ struct RvMgrObject
   RvMgr* mBody;
 
   // mVectArray のサイズ
-  ymuint32 mVectNum;
+  ymuint mVectNum;
 
   // RegVect を表すオブジェクトの配列
   PyObject** mVectArray;

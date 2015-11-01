@@ -75,7 +75,7 @@ private:
   vector<const RegVect*> mBody;
 
   // 個々の集合の開始位置を記録する配列
-  vector<ymuint32> mStartPos;
+  vector<ymuint> mStartPos;
 };
 
 
