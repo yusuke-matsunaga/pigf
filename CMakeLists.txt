@@ -76,7 +76,6 @@ include_directories (
 
 set (igugen_SOURCES
   src/igugen/igugen.cc
-  src/igugen/VarHeap.cc
   )
 
 set (libigf_SOURCES
@@ -86,24 +85,85 @@ set (libigf_SOURCES
   src/libigf/RandHashGen.cc
   src/libigf/RvMgr.cc
   src/libigf/VarFunc.cc
+  src/libigf/VarHeap.cc
   src/libigf/Variable.cc
   src/libigf/XorFunc.cc
+  src/libigf/lxgen.cc
+  src/libigf/lxgen_old.cc
   )
 
 
 # ===================================================================
-#  ターゲットの設定
+#  library ターゲットの設定
 # ===================================================================
-add_library(libigf STATIC ${libigf_SOURCES})
+
+ym_add_library (libigf
+  STATIC
+  ${libigf_SOURCES})
+
+
+# ===================================================================
+#  relase ターゲットの設定
+# ===================================================================
 
 add_executable(igugen
   ${igugen_SOURCES}
+  )
+
+target_compile_options (igugen
+  PRIVATE "-O3"
+  )
+
+target_compile_definitions (igugen
+  PRIVATE "-DNDEBUG"
   )
 
 target_link_libraries(igugen
   libigf
   ym_algo
   ym_utils
+  )
+
+
+# ===================================================================
+#  release with debug info ターゲットの設定
+# ===================================================================
+
+add_executable(igugen_p
+  ${igugen_SOURCES}
+  )
+
+target_compile_options (igugen_p
+  PRIVATE "-O2" "-g"
+  )
+
+target_compile_definitions (igugen_p
+  PRIVATE "-DNDEBUG"
+  )
+
+target_link_libraries(igugen_p
+  libigf_p
+  ym_algo_p
+  ym_utils_p
+  )
+
+
+# ===================================================================
+#  debug ターゲットの設定
+# ===================================================================
+
+add_executable(igugen_d
+  ${igugen_SOURCES}
+  )
+
+target_compile_options (igugen_d
+  PRIVATE "-g"
+  )
+
+target_link_libraries(igugen_d
+  libigf_d
+  ym_algo_d
+  ym_utils_d
   )
 
 

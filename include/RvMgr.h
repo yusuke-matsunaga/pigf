@@ -68,6 +68,21 @@ public:
   const vector<const RegVect*>&
   vect_list() const;
 
+  /// @brief 変数の価値を計算する．
+  /// @param[in] var 変数
+  ///
+  /// 価値とはその変数で区別できる要素対の数
+  ymuint
+  value(const Variable* var) const;
+
+  /// @brief 変数対の価値を計算する．
+  /// @param[in] var1, var2 変数
+  ///
+  /// 価値とはその変数で区別できる要素対の数
+  ymuint
+  value(const Variable* var1,
+	const Variable* var2) const;
+
   /// @brief インデックスのサイズを得る．
   ///
   /// インデックスのサイズとはインデックスを2進符号化するのに

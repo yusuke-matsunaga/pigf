@@ -5,7 +5,7 @@
 /// @brief Variable のヘッダファイル
 /// @author Yusuke Matsunaga (松永 裕介)
 ///
-/// Copyright (C) 2013 Yusuke Matsunaga
+/// Copyright (C) 2013, 2015 Yusuke Matsunaga
 /// All rights reserved.
 
 
@@ -50,10 +50,6 @@ public:
   /// 0 か 1 を返す．
   ymuint
   classify(const RegVect* vect) const;
-
-  /// @brief 価値を返す．
-  ymuint
-  value() const;
 
   /// @brief 内容を出力する．
   /// @param[in] s 出力先のストリーム

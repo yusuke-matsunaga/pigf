@@ -9,6 +9,7 @@
 
 #include "RvMgr.h"
 #include "RegVect.h"
+#include "Variable.h"
 #include "InputFunc.h"
 #include "FuncVect.h"
 #include "YmUtils/HashFunc.h"
@@ -137,6 +138,63 @@ RvMgr::read_data(istream& s)
   }
 
   return true;
+}
+
+// @brief 変数の価値を計算する．
+// @param[in] var 変数
+//
+// 価値とはその変数で区別できる要素対の数
+ymuint
+RvMgr::value(const Variable* var) const
+{
+  ymuint n0 = 0;
+  ymuint n1 = 0;
+  for (vector<const RegVect*>::const_iterator p = mVectList.begin();
+       p != mVectList.end(); ++ p) {
+    const RegVect* rv = *p;
+    if ( var->classify(rv) ) {
+      ++ n1;
+    }
+    else {
+      ++ n0;
+    }
+  }
+  return n0 * n1;
+}
+
+// @brief 変数対の価値を計算する．
+// @param[in] var1, var2 変数
+//
+// 価値とはその変数で区別できる要素対の数
+ymuint
+RvMgr::value(const Variable* var1,
+	     const Variable* var2) const
+{
+  ymuint n00 = 0;
+  ymuint n01 = 0;
+  ymuint n10 = 0;
+  ymuint n11 = 0;
+  for (vector<const RegVect*>::const_iterator p = mVectList.begin();
+       p != mVectList.end(); ++ p) {
+    const RegVect* rv = *p;
+    if ( var1->classify(rv) ) {
+      if ( var2->classify(rv) ) {
+	++ n11;
+      }
+      else {
+	++ n10;
+      }
+    }
+    else {
+      if ( var2->classify(rv) ) {
+	++ n01;
+      }
+      else {
+	++ n00;
+      }
+    }
+  }
+  return n00 * (n01 + n10 + n11) + n01 * (n10 + n11) + n10 * n11;
 }
 
 // @brief インデックスのサイズを得る．

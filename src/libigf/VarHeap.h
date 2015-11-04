@@ -24,7 +24,7 @@ class VarHeap
 public:
 
   /// @brief コンストラクタ
-  /// @param[in] num ノード数
+  /// @param[in] num 確保するノード数
   VarHeap(ymuint num);
 
   /// @brief デストラクタ
