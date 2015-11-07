@@ -60,7 +60,7 @@ public:
   ///
   /// 0 か 1 を返す．
   ymuint
-  classify(const Variable* var) const;
+  classify(const Variable& var) const;
 
   /// @brief ハッシュ値を返す．
   ymuint

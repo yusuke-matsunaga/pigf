@@ -43,6 +43,13 @@ Variable::sft(ymuint vid)
   return vid % 64;
 }
 
+// @brief 空のコンストラクタ
+Variable::Variable() :
+  mVarNum(0),
+  mBitVect(nullptr)
+{
+}
+
 // @brief 通常の変数用のコンストラクタ
 // @param[in] var_num 変数の総数
 // @param[in] vid 変数番号

@@ -26,7 +26,7 @@ public:
 
   /// @brief コンストラクタ
   /// @param[in] var_list 変数のリスト
-  SigFunc(const vector<Variable*>& var_list);
+  SigFunc(const vector<Variable>& var_list);
 
   /// @brief デストラクタ
   ~SigFunc();
@@ -58,7 +58,7 @@ private:
   //////////////////////////////////////////////////////////////////////
 
   // 変数のリスト
-  vector<Variable*> mVarList;
+  vector<Variable> mVarList;
 
 };
 

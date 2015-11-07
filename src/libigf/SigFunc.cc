@@ -20,7 +20,7 @@ BEGIN_NAMESPACE_YM_IGF
 
 // @brief コンストラクタ
 // @param[in] var_list 変数のリスト
-SigFunc::SigFunc(const vector<Variable*>& var_list) :
+SigFunc::SigFunc(const vector<Variable>& var_list) :
   mVarList(var_list)
 {
 }
@@ -44,7 +44,7 @@ SigFunc::eval(const RegVect* rv) const
 {
   ymuint ans = 0U;
   for (ymuint i = 0; i < mVarList.size(); ++ i) {
-    Variable* var = mVarList[i];
+    const Variable& var = mVarList[i];
     if ( rv->classify(var) ) {
       ans |= (1U << i);
     }
@@ -58,8 +58,8 @@ void
 SigFunc::dump(ostream& s) const
 {
   for (ymuint i = 0; i < mVarList.size(); ++ i) {
-    Variable* var = mVarList[i];
-    var->dump(s);
+    const Variable& var = mVarList[i];
+    var.dump(s);
     s << endl;
   }
 }

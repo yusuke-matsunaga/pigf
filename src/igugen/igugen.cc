@@ -11,8 +11,7 @@
 #include "RegVect.h"
 #include "Variable.h"
 #include "RandHashGen.h"
-#include "InputFunc.h"
-#include "XorFunc.h"
+#include "SigFunc.h"
 #include "FuncVect.h"
 #include "IguGen.h"
 #include "YmUtils/PoptMainApp.h"
@@ -34,17 +33,17 @@ struct Lt
 
 void
 lxgen(RvMgr& rv_mgr,
-      vector<Variable*>& var_list);
+      vector<Variable>& var_list);
 
 void
 lxgen_old(RvMgr& rv_mgr,
-	  vector<Variable*>& var_list);
+	  vector<Variable>& var_list);
 
 void
 rand_lxgen(RvMgr& rv_mgr,
 	   RandGen& rg,
 	   ymuint n,
-	   vector<Variable*>& var_list);
+	   vector<Variable>& var_list);
 
 int
 igugen(int argc,
@@ -114,7 +113,7 @@ igugen(int argc,
        << "# of vectors:    " << rv_mgr.vect_list().size() << endl
        << "# of index bits: " << rv_mgr.index_size() << endl;
 
-  vector<Variable*> var_list;
+  vector<Variable> var_list;
   if ( popt_x.is_specified() ) {
     lxgen(rv_mgr, var_list);
   }
@@ -129,13 +128,10 @@ igugen(int argc,
   else {
     ymuint ni = rv_mgr.vect_size();
     for (ymuint i = 0; i < ni; ++ i) {
-      Variable* var1 = new Variable(ni, i);
+      Variable var1(ni, i);
       ymuint val = rv_mgr.value(var1);
       if ( val > 0 ) {
 	var_list.push_back(var1);
-      }
-      else {
-	delete var1;
       }
     }
   }
@@ -183,23 +179,20 @@ igugen(int argc,
       cout.flush();
       vector<const FuncVect*> fv_list(m);
       for (ymuint i = 0; i < m; ++ i) {
-	InputFunc* f = NULL;
+	SigFunc* f = nullptr;
 	if ( popt_c.is_specified() ) {
 	  f = rhg.gen_func(n, p1, comp);
 	}
 	else {
 	  rcg1.generate(rg);
-	  vector<vector<ymuint> > vars_list;
+	  vector<Variable> tmp_list;
+	  tmp_list.reserve(p1);
 	  for (ymuint j = 0; j < p1; ++ j) {
 	    ymuint idx = rcg1.elem(j);
-	    Variable* var1 = var_list[idx];
-	    const vector<ymuint>& vid_list = var1->vid_list();
-	    vars_list.push_back(vector<ymuint>(vid_list.size()));
-	    for (ymuint k = 0; k < vid_list.size(); ++ k) {
-	      vars_list[j][k] = vid_list[k];
-	    }
+	    const Variable& var1 = var_list[idx];
+	    tmp_list.push_back(var1);
 	  }
-	  f = new XorFunc(vars_list);
+	  f = new SigFunc(tmp_list);
 	}
 	fv_list[i] = rv_mgr.gen_hash_vect(*f);
 	delete f;

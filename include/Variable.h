@@ -27,6 +27,9 @@ class Variable
 {
 public:
 
+  /// @brief 空のコンストラクタ
+  Variable();
+
   /// @brief 通常の変数用のコンストラクタ
   /// @param[in] var_num 変数の総数
   /// @param[in] vid 変数番号
@@ -52,15 +55,6 @@ public:
   /// の高い演算
   vector<ymuint>
   vid_list() const;
-
-#if 0
-  /// @brief ベクタを分類する．
-  /// @param[in] vect 対象のベクタ
-  ///
-  /// 0 か 1 を返す．
-  ymuint
-  classify(const RegVect* vect) const;
-#endif
 
   /// @brief ビットベクタの生データを返す．
   /// @param[in] pos ブロック番号

@@ -42,7 +42,7 @@ public:
 
   /// @brief 変数を返す．
   /// @param[in] pos 位置番号 ( 0 <= pos < size() )
-  Variable*
+  const Variable&
   var(ymuint pos) const;
 
   /// @brief 価値を返す．
@@ -58,13 +58,13 @@ public:
   /// @param[in] var 追加する変数
   /// @param[in] value 価値
   void
-  put(Variable* var,
+  put(const Variable& var,
       double value);
 
   /// @brief 値が最小の要素を取り出す．
   /// そのノードはヒープから取り除かれる．
-  Variable*
-  get_min();
+  void
+  pop_min();
 
   /// @brief 内容を出力する．
   /// @param[in] s 出力先のストリーム
@@ -79,7 +79,7 @@ private:
 
   struct Node
   {
-    Variable* mVar;
+    Variable mVar;
     double mValue;
   };
 
@@ -142,11 +142,10 @@ VarHeap::size() const
 // @brief 変数を返す．
 // @param[in] pos 位置番号 ( 0 <= pos < size() )
 inline
-Variable*
+const Variable&
 VarHeap::var(ymuint pos) const
 {
   ASSERT_COND( pos < size() );
-  ASSERT_COND( mHeap[pos].mVar );
   return mHeap[pos].mVar;
 }
 
@@ -170,7 +169,7 @@ VarHeap::empty() const
 // @brief 変数を追加する．
 inline
 void
-VarHeap::put(Variable* var,
+VarHeap::put(const Variable& var,
 	     double value)
 {
   if ( mHeapSize <= mVarNum ) {
@@ -194,17 +193,15 @@ VarHeap::put(Variable* var,
 // @brief 値が最小の要素を取り出す．
 // その変数はヒープから取り除かれる．
 inline
-Variable*
-VarHeap::get_min()
+void
+VarHeap::pop_min()
 {
   ASSERT_COND( !empty() );
-  Variable* var = mHeap[0].mVar;
   -- mVarNum;
   if ( mVarNum > 0 ) {
     mHeap[0] = mHeap[mVarNum];
     move_down(0);
   }
-  return var;
 }
 
 // @brief 要素の比較を行う．

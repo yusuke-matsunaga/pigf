@@ -73,15 +73,15 @@ public:
   ///
   /// 価値とはその変数で区別できる要素対の数
   double
-  value(const Variable* var) const;
+  value(const Variable& var) const;
 
   /// @brief 変数対の価値を計算する．
   /// @param[in] var1, var2 変数
   ///
   /// 価値とはその変数で区別できる要素対の数
   double
-  value(const Variable* var1,
-	const Variable* var2) const;
+  value(const Variable& var1,
+	const Variable& var2) const;
 
   /// @brief インデックスのサイズを得る．
   ///
@@ -94,7 +94,7 @@ public:
   /// @param[in] hash_func ハッシュ関数
   /// @return ハッシュ値のベクタ
   FuncVect*
-  gen_hash_vect(const InputFunc& hash_func) const;
+  gen_hash_vect(const SigFunc& hash_func) const;
 
   /// @brief 内容を出力する．
   /// @param[in] s 出力先のストリーム

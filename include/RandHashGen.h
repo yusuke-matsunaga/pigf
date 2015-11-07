@@ -39,7 +39,7 @@ public:
   /// @param[in] input_num 入力数
   /// @param[in] output_num 出力数
   /// @param[in] max_degree
-  InputFunc*
+  SigFunc*
   gen_func(ymuint input_num,
 	   ymuint output_num,
 	   ymuint max_degree);

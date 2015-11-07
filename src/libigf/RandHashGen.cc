@@ -8,7 +8,8 @@
 
 
 #include "RandHashGen.h"
-#include "XorFunc.h"
+#include "Variable.h"
+#include "SigFunc.h"
 #include "YmUtils/RandCombiGen.h"
 
 
@@ -32,20 +33,19 @@ RandHashGen::~RandHashGen()
 // @param[in] input_num 入力数
 // @param[in] output_num 出力数
 // @param[in] max_degree
-InputFunc*
+SigFunc*
 RandHashGen::gen_func(ymuint input_num,
 		      ymuint output_num,
 		      ymuint max_degree)
 {
-  vector<vector<ymuint> > f1_vect(output_num);
+  vector<Variable> var_list(output_num);
 
   RandCombiGen rcg1(input_num, output_num);
   rcg1.generate(mRandGen);
 
   for (ymuint opos = 0; opos < output_num; ++ opos) {
-    vector<ymuint>& var_vect = f1_vect[opos];
     ymuint pos0 = rcg1.elem(opos);
-    var_vect.push_back(pos0);
+    Variable var1(input_num, pos0);
 
     if ( max_degree > 1 ) {
       ymuint mask = (1U << (max_degree - 1)) - 1;
@@ -68,12 +68,16 @@ RandHashGen::gen_func(ymuint input_num,
 	rcg2.generate(mRandGen);
 	for (ymuint k = 0; k < nbit; ++ k) {
 	  ymuint pos = pos_list[rcg2.elem(k)];
-	  var_vect.push_back(pos);
+	  Variable var2(input_num, pos);
+	  var1 *= var2;
 	}
       }
     }
+
+    var_list[opos] = var1;
   }
-  return new XorFunc(f1_vect);
+
+  return new SigFunc(var_list);
 }
 
 END_NAMESPACE_YM_IGF

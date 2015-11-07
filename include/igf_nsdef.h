@@ -36,7 +36,7 @@ class RvMgr;
 
 class Variable;
 
-class InputFunc;
+class SigFunc;
 
 class FuncVect;
 

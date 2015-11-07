@@ -10,7 +10,7 @@
 #include "RvMgr.h"
 #include "RegVect.h"
 #include "Variable.h"
-#include "InputFunc.h"
+#include "SigFunc.h"
 #include "FuncVect.h"
 #include "YmUtils/HashFunc.h"
 #include "YmUtils/HashSet.h"
@@ -145,7 +145,7 @@ RvMgr::read_data(istream& s)
 //
 // 価値とはその変数で区別できる要素対の数
 double
-RvMgr::value(const Variable* var) const
+RvMgr::value(const Variable& var) const
 {
   ymuint64 n0 = 0;
   ymuint64 n1 = 0;
@@ -171,8 +171,8 @@ RvMgr::value(const Variable* var) const
 //
 // 価値とはその変数で区別できる要素対の数
 double
-RvMgr::value(const Variable* var1,
-	     const Variable* var2) const
+RvMgr::value(const Variable& var1,
+	     const Variable& var2) const
 {
   ymuint64 n00 = 0;
   ymuint64 n01 = 0;
@@ -260,7 +260,7 @@ RvMgr::delete_vector(RegVect* vec)
 // @param[in] hash_func ハッシュ関数
 // @return ハッシュ値のベクタ
 FuncVect*
-RvMgr::gen_hash_vect(const InputFunc& hash_func) const
+RvMgr::gen_hash_vect(const SigFunc& hash_func) const
 {
   ymuint nv = mVectList.size();
   ymuint p = hash_func.output_width();
@@ -335,12 +335,12 @@ END_NONAMESPACE
 //
 // 0 か 1 を返す．
 ymuint
-RegVect::classify(const Variable* var) const
+RegVect::classify(const Variable& var) const
 {
   ymuint ans = 0;
   ymuint nblk = (size() + 63) / 64;
   for (ymuint i = 0; i < nblk; ++ i) {
-    ymuint64 tmp = var->raw_data(i) & mBody[i];
+    ymuint64 tmp = var.raw_data(i) & mBody[i];
     ans ^= parity64(tmp);
   }
   return ans;
