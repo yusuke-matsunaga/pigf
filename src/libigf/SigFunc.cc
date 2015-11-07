@@ -9,6 +9,7 @@
 
 #include "SigFunc.h"
 #include "Variable.h"
+#include "RegVect.h"
 
 
 BEGIN_NAMESPACE_YM_IGF

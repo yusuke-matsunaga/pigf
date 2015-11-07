@@ -16,6 +16,7 @@
 #include "FuncVect.h"
 #include "IguGen.h"
 #include "YmUtils/PoptMainApp.h"
+#include "YmUtils/RandGen.h"
 #include "YmUtils/RandCombiGen.h"
 
 
@@ -39,6 +40,12 @@ void
 lxgen_old(RvMgr& rv_mgr,
 	  vector<Variable*>& var_list);
 
+void
+rand_lxgen(RvMgr& rv_mgr,
+	   RandGen& rg,
+	   ymuint n,
+	   vector<Variable*>& var_list);
+
 int
 igugen(int argc,
        const char** argv)
@@ -60,8 +67,12 @@ igugen(int argc,
   main_app.add_option(&popt_x);
 
   // x オプション
-  PoptNone popt_x2("xor_old", 'X', "linear transformation");
+  PoptNone popt_x2("xor_old", 'X', "linear transformation(old)");
   main_app.add_option(&popt_x2);
+
+  // y オプション
+  PoptNone popt_y("rand_xor", 'y', "linear transformation(random)");
+  main_app.add_option(&popt_y);
 
   // c オプション
   PoptUint popt_c("compose", 'c',
@@ -109,6 +120,11 @@ igugen(int argc,
   }
   else if ( popt_x2.is_specified() ) {
     lxgen_old(rv_mgr, var_list);
+  }
+  else if ( popt_y.is_specified() ) {
+    RandGen rg;
+    ymuint ni = rv_mgr.vect_size();
+    rand_lxgen(rv_mgr, rg, ni, var_list);
   }
   else {
     ymuint ni = rv_mgr.vect_size();
