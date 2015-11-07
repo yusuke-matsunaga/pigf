@@ -47,7 +47,7 @@ public:
 
   /// @brief 価値を返す．
   /// @param[in] pos 位置番号 ( 0 <= pos < size() )
-  ymuint
+  double
   value(ymuint pos) const;
 
   /// @brief ヒープが空の時 true を返す．
@@ -59,7 +59,7 @@ public:
   /// @param[in] value 価値
   void
   put(Variable* var,
-      ymuint value);
+      double value);
 
   /// @brief 値が最小の要素を取り出す．
   /// そのノードはヒープから取り除かれる．
@@ -80,7 +80,7 @@ private:
   struct Node
   {
     Variable* mVar;
-    ymuint mValue;
+    double mValue;
   };
 
 
@@ -145,13 +145,15 @@ inline
 Variable*
 VarHeap::var(ymuint pos) const
 {
+  ASSERT_COND( pos < size() );
+  ASSERT_COND( mHeap[pos].mVar );
   return mHeap[pos].mVar;
 }
 
 // @brief 価値を返す．
 // @param[in] pos 位置番号 ( 0 <= pos < size() )
 inline
-ymuint
+double
 VarHeap::value(ymuint pos) const
 {
   return mHeap[pos].mValue;
@@ -169,7 +171,7 @@ VarHeap::empty() const
 inline
 void
 VarHeap::put(Variable* var,
-	     ymuint value)
+	     double value)
 {
   if ( mHeapSize <= mVarNum ) {
     ymuint old_size = mHeapSize;
@@ -215,7 +217,15 @@ int
 VarHeap::compare(const Node& node1,
 		 const Node& node2)
 {
-  return node1.mValue - node2.mValue;
+  if ( node1.mValue < node2.mValue ) {
+    return -1;
+  }
+  else if ( node1.mValue > node2.mValue ) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
 }
 
 END_NAMESPACE_YM_IGF

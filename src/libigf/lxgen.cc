@@ -12,15 +12,6 @@
 #include "Variable.h"
 #include "VarHeap.h"
 
-#if 0
-#include "RandHashGen.h"
-#include "InputFunc.h"
-#include "XorFunc.h"
-#include "FuncVect.h"
-#include "IguGen.h"
-#include "YmUtils/PoptMainApp.h"
-#include "YmUtils/RandCombiGen.h"
-#endif
 
 BEGIN_NAMESPACE_YM_IGF
 
@@ -33,16 +24,17 @@ lxgen(RvMgr& rv_mgr,
   // 登録ベクタを区別しない変数は取り除く．
   ymuint ni = rv_mgr.vect_size();
   VarHeap var_set(ni);
-  const vector<const RegVect*>& v_list = rv_mgr.vect_list();
   for (ymuint i = 0; i < ni; ++ i) {
-    Variable* var1 = new Variable(i);
+    Variable* var1 = new Variable(ni, i);
     // この変数の価値を求める．
-    ymuint val = rv_mgr.value(var1);
+    double val = rv_mgr.value(var1);
     if ( val > 0 ) {
       // 価値をキーにしてヒープ木に積む．
       var_set.put(var1, val);
 
-      cout << "Var#" << i << ": " << val << endl;
+      cout << "Var#" << i << ": ";
+      var1->dump(cout);
+      cout << "  " << val << endl;
     }
     else {
       // この変数は登録ベクタを区別しない．
@@ -53,77 +45,49 @@ lxgen(RvMgr& rv_mgr,
   // 変化がある限り改善ループを繰り返す．
   for ( ; ; ) {
     // 最も価値の低い変数を取り出す．
-    ymuint val_old = var_set.value(0);
+    double val_old = var_set.value(0);
     Variable* var_old = var_set.var(0);
-    const vector<ymuint>& vid_list0 = var_old->vid_list();
-
-    cout << "Choose ";
-    var_old->dump(cout);
-    cout << endl;
+    vector<ymuint> vid_list0 = var_old->vid_list();
 
     // 他の変数と組み合わせて新しい合成変数を作る．
-    ymuint max_val = val_old + 1;
+    double max_val = val_old;
     vector<Variable*> max_vars;
+#if 1
     for (ymuint i = 1; i < var_set.size(); ++ i) {
       Variable* var1 = var_set.var(i);
-      const vector<ymuint>& vid_list1 = var1->vid_list();
+      Variable* new_var = new Variable(*var_old * *var1);
+#else
+    vector<bool> used(ni, false);
+    for (vector<ymuint>::const_iterator p = vid_list0.begin();
+	 p != vid_list0.end(); ++ p) {
+      used[*p] = true;
+    }
 
-      cout << "  Choose ";
-      var1->dump(cout);
-      cout << endl;
+    for (ymuint i = 0; i < ni; ++ i) {
+      if ( used[i] ) {
+	continue;
+      }
 
-      // vid_list0 と vid_list1 をマージする．
-      // ただし，両方に現れていたら削除する．
-      vector<ymuint> vid_list;
-      ymuint n0 = vid_list0.size();
-      ymuint n1 = vid_list1.size();
-      vid_list.reserve(n0 + n1);
-      ymuint i0 = 0;
-      ymuint i1 = 0;
-      while ( i0 < n0 && i1 < n1 ) {
-	ymuint v0 = vid_list0[i0];
-	ymuint v1 = vid_list1[i1];
-	if ( v0 < v1 ) {
-	  vid_list.push_back(v0);
-	  ++ i0;
-	}
-	else if ( v0 > v1 ) {
-	  vid_list.push_back(v1);
-	  ++ i1;
-	}
-	else {
-	  ++ i0;
-	  ++ i1;
-	}
-      }
-      for ( ; i0 < n0; ++ i0) {
-	vid_list.push_back(vid_list0[i0]);
-      }
-      for ( ; i1 < n1; ++ i1) {
-	vid_list.push_back(vid_list1[i1]);
-      }
-#if 0
+      Variable* new_var = new Variable(ni, i);
+      (*new_var) *= (*var_old);
+#endif
+#if 1
       bool found = false;
       for (ymuint j = 1; j < var_set.size(); ++ j) {
 	Variable* var1 = var_set.var(j);
-	if ( var1->vid_list() == vid_list ) {
+	if ( *var1 == *new_var ) {
 	  found = true;
 	  break;
 	}
       }
       if ( found ) {
+	delete new_var;
 	continue;
       }
 #endif
 
-      Variable* new_var = new Variable(vid_list);
-      ymuint val = rv_mgr.value(new_var);
-      {
-	cout << " new variable = ";
-	new_var->dump(cout);
-	cout << "  value = " << val << endl;
+      double val = rv_mgr.value(new_var);
 
-      }
       if ( max_val < val ) {
 	max_val = val;
 	for (vector<Variable*>::iterator p = max_vars.begin();
@@ -152,20 +116,19 @@ lxgen(RvMgr& rv_mgr,
     }
     else {
       // タイブレークは他の変数と組み合わせた時の区別できるベクタ数の最小値が最大のもの
-      ymuint nv = rv_mgr.vect_list().size();
-      ymuint max_minval = 0;
+      double max_minval = 0;
       for (vector<Variable*>::iterator p = max_vars.begin();
 	   p != max_vars.end(); ++ p) {
 	Variable* var1 = *p;
-	ymuint minval = (nv * nv * 6) / 16;
+	double minval = DBL_MAX;
 	for (ymuint j = 1; j < var_set.size(); ++ j) {
 	  Variable* var2 = var_set.var(j);
-	  ymuint val = rv_mgr.value(var1, var2);
+	  double val = rv_mgr.value(var1, var2);
 	  if ( minval > val ) {
 	    minval = val;
 	  }
 	}
-	if ( max_minval < minval ) {
+	if ( max_var == nullptr || max_minval < minval ) {
 	  max_minval = minval;
 	  delete max_var;
 	  max_var = var1;
@@ -174,11 +137,6 @@ lxgen(RvMgr& rv_mgr,
 	  delete var1;
 	}
       }
-    }
-    {
-      cout << " max_var = ";
-      max_var->dump(cout);
-      cout << "  value = " << max_val << endl;
     }
     var_set.get_min();
     var_set.put(max_var, max_val);
@@ -190,9 +148,13 @@ lxgen(RvMgr& rv_mgr,
   var_list.clear();
   var_list.reserve(var_set.size());
   for (ymuint i = 0; i < var_set.size(); ++ i) {
-    var_list.push_back(var_set.var(i));
+    Variable* var1 = var_set.var(i);
+    var_list.push_back(var1);
 
-    cout << "Var#" << i << ": " << var_set.value(i) << endl;
+    double val =var_set.value(i);
+    cout << "Var#" << i << ": ";
+    var1->dump(cout);
+    cout << "  " << val << endl;
   }
 }
 

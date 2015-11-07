@@ -55,6 +55,13 @@ public:
   ymuint
   val(ymuint pos) const;
 
+  /// @brief 分類する．
+  /// @param[in] var 分類用の変数
+  ///
+  /// 0 か 1 を返す．
+  ymuint
+  classify(const Variable* var) const;
+
   /// @brief ハッシュ値を返す．
   ymuint
   hash() const;
@@ -130,7 +137,7 @@ RegVect::val(ymuint pos) const
   ASSERT_COND( pos < size() );
   ymuint nblk = pos / 64;
   ymuint shft = pos % 64;
-  return (mBody[nblk] >> shft) & 1U;
+  return (mBody[nblk] >> shft) & 1ULL;
 }
 
 END_NAMESPACE_YM_IGF

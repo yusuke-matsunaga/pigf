@@ -59,6 +59,9 @@ enable_testing()
 # サブディレクトリの設定
 # ===================================================================
 
+add_subdirectory (
+  gtest
+  )
 
 # ===================================================================
 # インクルードパスの設定
@@ -84,6 +87,7 @@ set (libigf_SOURCES
   src/libigf/PhfGraph.cc
   src/libigf/RandHashGen.cc
   src/libigf/RvMgr.cc
+  src/libigf/SigFunc.cc
   src/libigf/VarFunc.cc
   src/libigf/VarHeap.cc
   src/libigf/Variable.cc

@@ -144,41 +144,45 @@ RvMgr::read_data(istream& s)
 // @param[in] var 変数
 //
 // 価値とはその変数で区別できる要素対の数
-ymuint
+double
 RvMgr::value(const Variable* var) const
 {
-  ymuint n0 = 0;
-  ymuint n1 = 0;
+  ymuint64 n0 = 0;
+  ymuint64 n1 = 0;
   for (vector<const RegVect*>::const_iterator p = mVectList.begin();
        p != mVectList.end(); ++ p) {
     const RegVect* rv = *p;
-    if ( var->classify(rv) ) {
+    if ( rv->classify(var) ) {
       ++ n1;
     }
     else {
       ++ n0;
     }
   }
-  return n0 * n1;
+  ymuint64 nv = mVectList.size();
+  ymuint64 n_ideal = (nv * nv) / 4;
+  ymuint64 n = n0 * n1;
+  return static_cast<double>(n) / static_cast<double>(n_ideal);
+  //return static_cast<double>(n);
 }
 
 // @brief 変数対の価値を計算する．
 // @param[in] var1, var2 変数
 //
 // 価値とはその変数で区別できる要素対の数
-ymuint
+double
 RvMgr::value(const Variable* var1,
 	     const Variable* var2) const
 {
-  ymuint n00 = 0;
-  ymuint n01 = 0;
-  ymuint n10 = 0;
-  ymuint n11 = 0;
+  ymuint64 n00 = 0;
+  ymuint64 n01 = 0;
+  ymuint64 n10 = 0;
+  ymuint64 n11 = 0;
   for (vector<const RegVect*>::const_iterator p = mVectList.begin();
        p != mVectList.end(); ++ p) {
     const RegVect* rv = *p;
-    if ( var1->classify(rv) ) {
-      if ( var2->classify(rv) ) {
+    if ( rv->classify(var1) ) {
+      if ( rv->classify(var2) ) {
 	++ n11;
       }
       else {
@@ -186,7 +190,7 @@ RvMgr::value(const Variable* var1,
       }
     }
     else {
-      if ( var2->classify(rv) ) {
+      if ( rv->classify(var2) ) {
 	++ n01;
       }
       else {
@@ -194,7 +198,11 @@ RvMgr::value(const Variable* var1,
       }
     }
   }
-  return n00 * (n01 + n10 + n11) + n01 * (n10 + n11) + n10 * n11;
+  ymuint64 nv = mVectList.size();
+  ymuint64 n_ideal = (nv * nv * 6) / 16;
+  ymuint64 n = n00 * (n01 + n10 + n11) + n01 * (n10 + n11) + n10 * n11;
+  return static_cast<double>(n) / static_cast<double>(n_ideal);
+  //return static_cast<double>(n);
 }
 
 // @brief インデックスのサイズを得る．
@@ -282,6 +290,61 @@ RvMgr::dump(ostream& s) const
 //////////////////////////////////////////////////////////////////////
 // クラス RegVect
 //////////////////////////////////////////////////////////////////////
+
+BEGIN_NONAMESPACE
+
+inline
+ymuint
+parity64(ymuint64 data)
+{
+  ymuint64 data_a = data & 0x00000000FFFFFFFFULL;
+  ymuint64 data_b = data >> 32;
+  data = data_a ^ data_b;
+
+  data_a = data & 0x000000000000FFFFULL;
+  data_b = data >> 16;
+  data = data_a ^ data_b;
+
+  data_a = data & 0x00000000000000FFULL;
+  data_b = data >> 8;
+  data = data_a ^ data_b;
+
+  data_a = data & 0x000000000000000FULL;
+  data_b = data >> 4;
+  data = data_a ^ data_b;
+
+  data_a = data & 0x0000000000000007ULL;
+  data_b = data >> 3;
+  data = data_a ^ data_b;
+
+  data_a = data & 0x0000000000000003ULL;
+  data_b = data >> 2;
+  data = data_a ^ data_b;
+
+  data_a = data & 0x0000000000000001ULL;
+  data_b = data >> 1;
+  data = data_a ^ data_b;
+
+  return data;
+}
+
+END_NONAMESPACE
+
+// @brief 分類する．
+// @param[in] var 分類用の変数
+//
+// 0 か 1 を返す．
+ymuint
+RegVect::classify(const Variable* var) const
+{
+  ymuint ans = 0;
+  ymuint nblk = (size() + 63) / 64;
+  for (ymuint i = 0; i < nblk; ++ i) {
+    ymuint64 tmp = var->raw_data(i) & mBody[i];
+    ans ^= parity64(tmp);
+  }
+  return ans;
+}
 
 // @brief ハッシュ値を返す．
 ymuint

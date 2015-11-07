@@ -113,7 +113,7 @@ igugen(int argc,
   else {
     ymuint ni = rv_mgr.vect_size();
     for (ymuint i = 0; i < ni; ++ i) {
-      Variable* var1 = new Variable(i);
+      Variable* var1 = new Variable(ni, i);
       ymuint val = rv_mgr.value(var1);
       if ( val > 0 ) {
 	var_list.push_back(var1);
