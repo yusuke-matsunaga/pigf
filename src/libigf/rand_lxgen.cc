@@ -68,11 +68,9 @@ rand_lxgen(RvMgr& rv_mgr,
     Variable max_var = var1;
 
     while ( !tmp_list.empty() ) {
-      cout << " current max = " << max_val << endl;
       Variable var2 = choose_var(tmp_list, rg);
       var1 *= var2;
       double val = rv_mgr.value(var1);
-      cout << "  new_val = " << val << endl;
       if ( max_val < val ) {
 	max_val = val;
 	max_var = var1;
@@ -87,9 +85,7 @@ rand_lxgen(RvMgr& rv_mgr,
   for (ymuint i = 0; i < n; ++ i) {
     const Variable& var1 = ans_list[i];
     double val = rv_mgr.value(var1);
-    cout << "Var#" << i << ": ";
-    var1.dump(cout);
-    cout << "  " << val << endl;
+    cout << "Var#" << i << ": " << val << ": " << var1 << endl;
   }
 }
 

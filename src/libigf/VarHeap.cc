@@ -112,8 +112,7 @@ VarHeap::print(ostream& s)
     << " size() = " << size() << endl;
   for (ymuint i = 0; i < size(); ++ i) {
     const Variable& var1 = var(i);
-    var1.dump(s);
-    s << ": value = " << mHeap[i].mValue << endl;
+    s << var1 << ": value = " << mHeap[i].mValue << endl;
   }
   s << endl;
 }

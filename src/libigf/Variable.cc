@@ -180,6 +180,17 @@ Variable::operator==(const Variable& right) const
   return true;
 }
 
+// @relates Variable
+// @brief 非等価演算
+// @param[in] left, right オペランド
+// @return 異なるとき true を返す．
+bool
+operator!=(const Variable& left,
+	   const Variable& right)
+{
+  return !left.operator==(right);
+}
+
 // @brief 内容を出力する．
 void
 Variable::dump(ostream& s) const
@@ -199,6 +210,16 @@ Variable::dump(ostream& s) const
     }
     s << ")";
   }
+}
+
+// @relates Variable
+// @brief ストリーム出力演算子
+ostream&
+operator<<(ostream& s,
+	   const Variable& var)
+{
+  var.dump(s);
+  return s;
 }
 
 END_NAMESPACE_YM_IGF

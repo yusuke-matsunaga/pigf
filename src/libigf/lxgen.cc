@@ -52,9 +52,7 @@ lxgen(RvMgr& rv_mgr,
       // 価値をキーにしてヒープ木に積む．
       var_set.put(var1, val);
 
-      cout << "Var#" << i << ": ";
-      var1.dump(cout);
-      cout << "  " << val << endl;
+      cout << "Var#" << i << ": " << val << ": " << var1 << endl;
     }
   }
 
@@ -146,9 +144,7 @@ lxgen(RvMgr& rv_mgr,
     var_list.push_back(var1);
 
     double val =var_set.value(i);
-    cout << "Var#" << i << ": ";
-    var1.dump(cout);
-    cout << "  " << val << endl;
+    cout << "Var#" << i << ": " << val << ": " << var1 << endl;
   }
 }
 

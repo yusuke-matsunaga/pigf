@@ -16,20 +16,39 @@
 
 BEGIN_NAMESPACE_YM_IGF
 
+BEGIN_NONAMESPACE
+
+double
+calc_minval(const Variable& var1,
+	    const VarHeap& var_set,
+	    const RvMgr& rv_mgr)
+{
+  double minval = DBL_MAX;
+  for (ymuint i = 1; i < var_set.size(); ++ i) {
+    const Variable& var2 = var_set.var(i);
+    double val = rv_mgr.value(var1, var2);
+    if ( minval > val ) {
+      minval = val;
+    }
+  }
+  return minval;
+}
+
+END_NONAMESPACE
+
 void
 lxgen_old(RvMgr& rv_mgr,
 	  vector<Variable>& var_list)
 {
   ymuint ni = rv_mgr.vect_size();
   VarHeap var_set(ni);
-  const vector<const RegVect*>& v_list = rv_mgr.vect_list();
   for (ymuint i = 0; i < ni; ++ i) {
     Variable var1(ni, i);
     double val = rv_mgr.value(var1);
     if ( val > 0 ) {
       var_set.put(var1, val);
 
-      cout << "Var#" << i << ": " << val << endl;
+      cout << "Var#" << i << ": " << val << ": " << var1 << endl;
     }
   }
 
@@ -38,26 +57,15 @@ lxgen_old(RvMgr& rv_mgr,
     const Variable& var_old = var_set.var(0);
     vector<ymuint> vid_list0 = var_old.vid_list();
 
-    cout << "Chooose ";
-    var_old.dump(cout);
-    cout << "  " << n_old << endl;
-
-    vector<bool> used(ni, false);
-    for (vector<ymuint>::const_iterator p = vid_list0.begin();
-	 p != vid_list0.end(); ++ p) {
-      ymuint pos = *p;
-      ASSERT_COND( pos < ni );
-      used[pos] = true;
-    }
-
     double max_val = n_old;
     vector<Variable> max_vars;
     for (ymuint i = 0; i < ni; ++ i) {
-      if ( used[i] ) {
+      Variable new_var(ni, i);
+
+      if ( new_var && var_old ) {
 	continue;
       }
 
-      Variable new_var(ni, i);
       new_var *= var_old;
 
       bool found = false;
@@ -69,15 +77,10 @@ lxgen_old(RvMgr& rv_mgr,
 	}
       }
       if ( found ) {
-	cout << " duplicated" << endl;
 	continue;
       }
 
       double val = rv_mgr.value(new_var);
-
-      cout << " new var = ";
-      new_var.dump(cout);
-      cout << "  " << val << endl;
 
       if ( max_val < val ) {
 	max_val = val;
@@ -95,40 +98,20 @@ lxgen_old(RvMgr& rv_mgr,
     ymuint n = max_vars.size();
     Variable max_var = max_vars[0];
     if ( n > 1 ) {
-#if 0
       ymuint max_minval = calc_minval(max_var, var_set, rv_mgr);
       ymuint nv = rv_mgr.vect_list().size();
-      for (vector<Variable*>::iterator p = max_vars.begin();
+      for (vector<Variable>::iterator p = max_vars.begin();
 	   p != max_vars.end(); ++ p) {
-	Variable* var1 = *p;
-	ymuint minval = (nv * nv * 6) / 16;
-	for (ymuint j = 1; j < var_set.size(); ++ j) {
-	  Variable* var2 = var_set.var(j);
-	  double val = rv_mgr.value(var1, var2);
-	  if ( minval > val ) {
-	    minval = val;
-	  }
-	}
-	if ( max_var == NULL || max_minval < minval ) {
+	const Variable& var1 = *p;
+	ymuint minval = calc_minval(var1, var_set, rv_mgr);
+	if ( max_minval < minval ) {
 	  max_minval = minval;
 	  max_var = var1;
 	}
       }
-#endif
     }
     var_set.pop_min();
-    {
-      cout << "BEFORE" << endl;
-      var_set.print(cout);
-      cout << "max_var = ";
-      max_var.dump(cout);
-      cout << endl;
-    }
     var_set.put(max_var, max_val);
-    {
-      cout << "AFTER" << endl;
-      var_set.print(cout);
-    }
   }
 
   cout << endl;
@@ -141,9 +124,7 @@ lxgen_old(RvMgr& rv_mgr,
     var_list.push_back(var1);
 
     double val =var_set.value(i);
-    cout << "Var#" << i << ": ";
-    var1.dump(cout);
-    cout << "  " << val << endl;
+    cout << "Var#" << i << ": " << val << ": " << var1 << endl;
   }
 }
 

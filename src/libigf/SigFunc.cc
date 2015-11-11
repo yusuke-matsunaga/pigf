@@ -59,8 +59,7 @@ SigFunc::dump(ostream& s) const
 {
   for (ymuint i = 0; i < mVarList.size(); ++ i) {
     const Variable& var = mVarList[i];
-    var.dump(s);
-    s << endl;
+    s << "#" << i << ": " << var << endl;
   }
 }
 
