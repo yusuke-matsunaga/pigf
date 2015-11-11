@@ -337,6 +337,7 @@ END_NONAMESPACE
 ymuint
 RegVect::classify(const Variable& var) const
 {
+#if 1
   ymuint ans = 0;
   ymuint nblk = (size() + 63) / 64;
   for (ymuint i = 0; i < nblk; ++ i) {
@@ -344,6 +345,15 @@ RegVect::classify(const Variable& var) const
     ans ^= parity64(tmp);
   }
   return ans;
+#else
+  const vector<ymuint>& vid_list = var.vid_list();
+  ymuint ans = 0;
+  for (ymuint i = 0; i < vid_list.size(); ++ i) {
+    ymuint v = vid_list[i];
+    ans ^= val(v);
+  }
+  return ans;
+#endif
 }
 
 // @brief ハッシュ値を返す．

@@ -40,6 +40,11 @@ public:
   /// @param[in] src コピー元のオブジェクト
   Variable(const Variable& src);
 
+  /// @brief 代入演算子
+  /// @param[in] src コピー元のオブジェクト
+  const Variable&
+  operator=(const Variable& src);
+
   /// @brief デストラクタ
   ~Variable();
 
@@ -68,6 +73,11 @@ public:
   /// 合成結果を自分に代入する intern 演算
   const Variable&
   operator*=(const Variable& right);
+
+  /// @brief 共通要素を持つとき true を返す．
+  /// @param[in] right オペランド
+  bool
+  operator&&(const Variable& right) const;
 
   /// @brief 等価比較
   /// @param[in] right オペランド

@@ -75,6 +75,24 @@ Variable::Variable(const Variable& src) :
   }
 }
 
+// @brief 代入演算子
+// @param[in] src コピー元のオブジェクト
+const Variable&
+Variable::operator=(const Variable& src)
+{
+  if ( &src != this ) {
+    if ( mVarNum != src.mVarNum ) {
+      mVarNum = src.mVarNum;
+      delete [] mBitVect;
+      mBitVect = new ymuint64[nblk()];
+    }
+    for (ymuint i = 0; i < nblk(); ++ i) {
+      mBitVect[i] = src.mBitVect[i];
+    }
+  }
+  return *this;
+}
+
 // @brief デストラクタ
 Variable::~Variable()
 {
@@ -97,60 +115,6 @@ Variable::vid_list() const
   return vlist;
 }
 
-#if 0
-BEGIN_NONAMESPACE
-
-inline
-ymuint
-parity64(ymuint64 data)
-{
-  ymuint64 data_a = data & 0x00000000FFFFFFFFULL;
-  ymuint64 data_b = data >> 32;
-  data = data_a ^ data_b;
-
-  data_a = data & 0x000000000000FFFFULL;
-  data_b = data >> 16;
-  data = data_a ^ data_b;
-
-  data_a = data & 0x00000000000000FFULL;
-  data_b = data >> 8;
-  data = data_a ^ data_b;
-
-  data_a = data & 0x000000000000000FULL;
-  data_b = data >> 4;
-  data = data_a ^ data_b;
-
-  data_a = data & 0x0000000000000007ULL;
-  data_b = data >> 3;
-  data = data_a ^ data_b;
-
-  data_a = data & 0x0000000000000003ULL;
-  data_b = data >> 2;
-  data = data_a ^ data_b;
-
-  data_a = data & 0x0000000000000001ULL;
-  data_b = data >> 1;
-  data = data_a ^ data_b;
-
-  return data;
-}
-
-END_NONAMESPACE
-
-// @brief ベクタを分類する．
-// @param[in] vect 対象のベクタ
-ymuint
-Variable::classify(const RegVect* vect) const
-{
-  ymuint ans = 0;
-  for (ymuint i = 0; i < nblk(); ++ i) {
-    ymuint64 tmp = mBitVect[i] & vect->raw_data(i);
-    ans ^= parity64(tmp);
-  }
-  return ans;
-}
-#endif
-
 // @brief ビットベクタの生データを返す．
 // @param[in] pos ブロック番号
 ymuint64
@@ -168,6 +132,7 @@ Variable::raw_data(ymuint pos) const
 const Variable&
 Variable::operator*=(const Variable& right)
 {
+  ASSERT_COND( mVarNum == right.mVarNum );
   for (ymuint i = 0; i < nblk(); ++ i) {
     mBitVect[i] ^= right.mBitVect[i];
   }
@@ -182,6 +147,21 @@ operator*(const Variable& left,
 	  const Variable& right)
 {
   return Variable(left).operator*=(right);
+}
+
+// @brief 共通要素を持つとき true を返す．
+// @param[in] right オペランド
+bool
+Variable::operator&&(const Variable& right) const
+{
+  ASSERT_COND( mVarNum == right.mVarNum );
+
+  for (ymuint i = 0; i < nblk(); ++ i) {
+    if ( (mBitVect[i] & right.mBitVect[i]) != 0ULL ) {
+      return true;
+    }
+  }
+  return false;
 }
 
 // @brief 等価比較

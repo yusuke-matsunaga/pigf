@@ -40,6 +40,10 @@ lxgen_old(RvMgr& rv_mgr,
 	  vector<Variable>& var_list);
 
 void
+lxgen_orig(RvMgr& rv_mgr,
+	   vector<Variable>& var_list);
+
+void
 rand_lxgen(RvMgr& rv_mgr,
 	   RandGen& rg,
 	   ymuint n,
@@ -72,6 +76,10 @@ igugen(int argc,
   // y オプション
   PoptNone popt_y("rand_xor", 'y', "linear transformation(random)");
   main_app.add_option(&popt_y);
+
+  // z オプション
+  PoptNone popt_z("rand_xor", 'z', "linear transformation(original)");
+  main_app.add_option(&popt_z);
 
   // c オプション
   PoptUint popt_c("compose", 'c',
@@ -124,6 +132,11 @@ igugen(int argc,
     RandGen rg;
     ymuint ni = rv_mgr.vect_size();
     rand_lxgen(rv_mgr, rg, ni, var_list);
+  }
+  else if ( popt_z.is_specified() ) {
+    RandGen rg;
+    ymuint ni = rv_mgr.vect_size();
+    lxgen_orig(rv_mgr, var_list);
   }
   else {
     ymuint ni = rv_mgr.vect_size();

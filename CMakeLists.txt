@@ -94,6 +94,7 @@ set (libigf_SOURCES
   src/libigf/XorFunc.cc
   src/libigf/lxgen.cc
   src/libigf/lxgen_old.cc
+  src/libigf/lxgen_orig.cc
   src/libigf/rand_lxgen.cc
   )
 
