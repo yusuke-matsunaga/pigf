@@ -88,10 +88,8 @@ set (libigf_SOURCES
   src/libigf/RandHashGen.cc
   src/libigf/RvMgr.cc
   src/libigf/SigFunc.cc
-  src/libigf/VarFunc.cc
   src/libigf/VarHeap.cc
   src/libigf/Variable.cc
-  src/libigf/XorFunc.cc
   src/libigf/lxgen.cc
   src/libigf/lxgen_old.cc
   src/libigf/lxgen_orig.cc
