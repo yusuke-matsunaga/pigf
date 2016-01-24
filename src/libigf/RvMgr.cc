@@ -11,7 +11,7 @@
 #include "RegVect.h"
 #include "Variable.h"
 #include "SigFunc.h"
-#include "FuncVect.h"
+//#include "FuncVect.h"
 #include "YmUtils/HashFunc.h"
 #include "YmUtils/HashSet.h"
 
@@ -256,6 +256,7 @@ RvMgr::delete_vector(RegVect* vec)
   mAlloc->put_memory(mRvSize, vec);
 }
 
+#if 0
 // @brief ベクタにハッシュ関数を適用した結果を作る．
 // @param[in] hash_func ハッシュ関数
 // @return ハッシュ値のベクタ
@@ -273,6 +274,7 @@ RvMgr::gen_hash_vect(const SigFunc& hash_func) const
   }
   return fv;
 }
+#endif
 
 // @brief 内容を出力する．
 // @param[in] s 出力先のストリーム

@@ -84,6 +84,7 @@ set (igugen_SOURCES
 set (libigf_SOURCES
   src/libigf/IGU.cc
   src/libigf/IguGen.cc
+  src/libigf/Partitioner.cc
   src/libigf/PhfGraph.cc
   src/libigf/RandHashGen.cc
   src/libigf/RvMgr.cc

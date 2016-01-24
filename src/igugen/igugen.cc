@@ -12,8 +12,8 @@
 #include "Variable.h"
 #include "RandHashGen.h"
 #include "SigFunc.h"
-#include "FuncVect.h"
 #include "IguGen.h"
+#include "Partitioner.h"
 #include "YmUtils/PoptMainApp.h"
 #include "YmUtils/RandGen.h"
 #include "YmUtils/RandCombiGen.h"
@@ -181,6 +181,7 @@ igugen(int argc,
 
   IguGen pg;
 
+  Partitioner pt;
   RandHashGen rhg;
   RandGen rg;
   for ( ; ; ++ p1) {
@@ -190,7 +191,7 @@ igugen(int argc,
     for (ymuint count = 0; count < count_limit; ++ count) {
       cout << "  " << count << " ...";
       cout.flush();
-      vector<const FuncVect*> fv_list(m);
+      vector<const SigFunc*> sigfunc_list(m);
       for (ymuint i = 0; i < m; ++ i) {
 	SigFunc* f = nullptr;
 	if ( popt_c.is_specified() ) {
@@ -207,22 +208,18 @@ igugen(int argc,
 	  }
 	  f = new SigFunc(tmp_list);
 	}
-	fv_list[i] = rv_mgr.gen_hash_vect(*f);
-	delete f;
+	sigfunc_list[i] = f;
       }
       cout << endl;
 
+      const vector<const RegVect*>& vect_list = rv_mgr.vect_list();
       vector<ymuint> block_map;
-      bool stat = false;
-      if ( naive || m == 1 ) {
-	stat = pg.naive_partition(fv_list, block_map);
-      }
-      else {
-	stat = pg.cf_partition(fv_list, block_map);
-      }
+      bool stat = pt.cf_partition(vect_list, sigfunc_list, block_map);
+
       for (ymuint i = 0; i < m; ++ i) {
-	delete fv_list[i];
+	delete sigfunc_list[i];
       }
+
       if ( stat ) {
 	found = true;
 #if 0
