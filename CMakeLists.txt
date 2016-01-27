@@ -87,6 +87,7 @@ set (libigf_SOURCES
   src/libigf/phf/PhfGraph.cc
   src/libigf/IGU.cc
   src/libigf/IguGen.cc
+  src/libigf/Partitioner.cc
   src/libigf/RandHashGen.cc
   src/libigf/SigFunc.cc
   src/libigf/VarHeap.cc
