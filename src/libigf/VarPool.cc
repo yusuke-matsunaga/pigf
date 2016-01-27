@@ -1,24 +1,24 @@
 ﻿
-/// @file VarHeap.cc
-/// @brief VarHeap の実装ファイル
+/// @file VarPool.cc
+/// @brief VarPool の実装ファイル
 /// @author Yusuke Matsunaga (松永 裕介)
 ///
-/// Copyright (C) 2014 Yusuke Matsunaga
+/// Copyright (C) 2016 Yusuke Matsunaga
 /// All rights reserved.
 
 
-#include "VarHeap.h"
+#include "VarPool.h"
 
 
 BEGIN_NAMESPACE_YM_IGF
 
 //////////////////////////////////////////////////////////////////////
-// クラス VarHeap
+// クラス VarPool
 //////////////////////////////////////////////////////////////////////
 
 // @brief コンストラクタ
 // @param[in] num ノード数
-VarHeap::VarHeap(ymuint num)
+VarPool::VarPool(ymuint num)
 {
   mHeapSize = num;
   mHeap = new Node[num];
@@ -26,15 +26,46 @@ VarHeap::VarHeap(ymuint num)
 }
 
 // @brief デストラクタ
-VarHeap::~VarHeap()
+VarPool::~VarPool()
 {
   delete [] mHeap;
+}
+
+// @brief 変数を追加する．
+void
+VarPool::put(const Variable& var,
+	     double value)
+{
+  if ( mHashTable.find(var) ) {
+    // 同じものがすでに入っていた．
+    return;
+  }
+
+  if ( mVarNum == mHeapSize ) {
+    // 一杯だった．
+    // 先頭の要素を捨てる．
+    mHashTable.erase(mHeap[0].mVar);
+    -- mVarNum;
+    if ( mVarNum > 0 ) {
+      mHeap[0] = mHeap[mVarNum];
+      move_down(0);
+    }
+  }
+  // 末尾に追加して上に上げる．
+  ymuint pos = mVarNum;
+  ++ mVarNum;
+  mHeap[pos].mVar = var;
+  mHeap[pos].mValue = value;
+  move_up(pos);
+
+  // ハッシュに登録する．
+  mHashTable.add(var);
 }
 
 // @brief 変数を適当な位置まで沈める．
 // @param[in] pos 対象の変数の位置
 void
-VarHeap::move_down(ymuint pos)
+VarPool::move_down(ymuint pos)
 {
   ymuint idx = pos;
   for ( ; ; ) {
@@ -83,48 +114,10 @@ VarHeap::move_down(ymuint pos)
   }
 }
 
-// @brief 変数を追加する．
-void
-VarHeap::put(const Variable& var,
-	     double value)
-{
-  for(ymuint i = 0; i < mVarNum; ++ i) {
-    if ( mHeap[i].mVar == var ) {
-      // 同じものがすでに入っていた．
-      return;
-    }
-  }
-
-  if ( mVarNum == mHeapSize ) {
-    // 一杯だった．
-    // 先頭の要素を捨てる．
-    pop_min();
-  }
-  // 末尾に追加して上に上げる．
-  ymuint pos = mVarNum;
-  ++ mVarNum;
-  mHeap[pos].mVar = var;
-  mHeap[pos].mValue = value;
-  move_up(pos);
-}
-
-// @brief 値が最小の要素を取り出す．
-// その変数はヒープから取り除かれる．
-void
-VarHeap::pop_min()
-{
-  ASSERT_COND( !empty() );
-  -- mVarNum;
-  if ( mVarNum > 0 ) {
-    mHeap[0] = mHeap[mVarNum];
-    move_down(0);
-  }
-}
-
 // @brief 変数を適当な位置まで浮かび上がらせる．
 // @param[in] pos 対象の変数の位置
 void
-VarHeap::move_up(ymuint pos)
+VarPool::move_up(ymuint pos)
 {
   ymuint idx = pos;
   while ( idx > 0 ) {
@@ -144,9 +137,9 @@ VarHeap::move_up(ymuint pos)
 
 // @brief 内容を出力する．
 void
-VarHeap::print(ostream& s)
+VarPool::print(ostream& s)
 {
-  s << "*** VarHeap ***" << endl
+  s << "*** VarPool ***" << endl
     << " size() = " << size() << endl;
   for (ymuint i = 0; i < size(); ++ i) {
     const Variable& var1 = var(i);

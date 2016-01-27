@@ -13,6 +13,7 @@
 #include "RandHashGen.h"
 #include "SigFunc.h"
 #include "IguGen.h"
+#include "LxGen.h"
 #include "Partitioner.h"
 #include "YmUtils/PoptMainApp.h"
 #include "YmUtils/RandGen.h"
@@ -123,7 +124,9 @@ igugen(int argc,
 
   vector<Variable> var_list;
   if ( popt_x.is_specified() ) {
-    lxgen(rv_mgr, var_list);
+    LxGen lxgen;
+    lxgen.generate(rv_mgr.vect_list(), 1000, var_list);
+    return 0;
   }
   else if ( popt_x2.is_specified() ) {
     lxgen_old(rv_mgr, var_list);

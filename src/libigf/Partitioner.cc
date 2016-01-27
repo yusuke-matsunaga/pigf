@@ -62,6 +62,8 @@ Partitioner::cf_partition(const vector<const RegVect*>& vect_list,
   ymuint nv = vect_list.size();
   mVectArray.clear();
   mVectArray.resize(nv);
+  mapping.clear();
+  mapping.resize(nv);
   // ひとつずつベクタを割り当てていく．
   for (ymuint i = 0; i < nv; ++ i) {
     const RegVect* v = vect_list[i];

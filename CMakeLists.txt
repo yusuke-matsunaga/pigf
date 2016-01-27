@@ -87,10 +87,13 @@ set (libigf_SOURCES
   src/libigf/phf/PhfGraph.cc
   src/libigf/IGU.cc
   src/libigf/IguGen.cc
+  src/libigf/LxGen.cc
+  src/libigf/RandLxGen.cc
   src/libigf/Partitioner.cc
   src/libigf/RandHashGen.cc
   src/libigf/SigFunc.cc
   src/libigf/VarHeap.cc
+  src/libigf/VarPool.cc
   src/libigf/lxgen.cc
   src/libigf/lxgen_old.cc
   src/libigf/lxgen_orig.cc
@@ -128,6 +131,25 @@ target_link_libraries(igugen
   ym_algo
   ym_utils
   )
+
+
+add_executable(lxgen
+  src/igugen/lxgen.cc
+  )
+
+target_compile_options (lxgen
+  PRIVATE "-O3"
+  )
+
+target_compile_definitions (lxgen
+  PRIVATE "-DNDEBUG"
+  )
+
+target_link_libraries(lxgen
+  libigf
+  ym_utils
+  )
+
 
 
 # ===================================================================

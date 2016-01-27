@@ -22,6 +22,9 @@ BEGIN_NAMESPACE_YM_IGF
 /// したもの
 /// 要するに変数番号の集合と等価
 /// 実装としては固定長のビットベクタを用いる．
+///
+/// コンストラクタではプライマリ変数しか作れない．
+/// 合成変数を作るには合成演算を用いる．
 //////////////////////////////////////////////////////////////////////
 class Variable
 {
@@ -30,9 +33,11 @@ public:
   /// @brief 空のコンストラクタ
   Variable();
 
-  /// @brief 通常の変数用のコンストラクタ
+  /// @brief プライマリ変数用のコンストラクタ
   /// @param[in] var_num 変数の総数
   /// @param[in] vid 変数番号
+  ///
+  /// ようするにただ一つのビットのみが1となっている変数を作る．
   Variable(ymuint var_num,
 	   ymuint vid);
 
@@ -79,11 +84,24 @@ public:
   bool
   operator&&(const Variable& right) const;
 
+  /// @brief ベクタ集合に対する価値を計算する．
+  /// @param[in] rv_list ベクタのリスト
+  /// @return 価値を返す．
+  ///
+  /// 価値はこの変数で区別されるベクタ対の個数の
+  /// 理想値に対する割合のこと．
+  double
+  value(const vector<const RegVect*>& rv_list) const;
+
   /// @brief 等価比較
   /// @param[in] right オペランド
   /// @return 等しい時 true を返す．
   bool
   operator==(const Variable& right) const;
+
+  /// @brief ハッシュ値を返す．
+  ymuint
+  hash() const;
 
   /// @brief 内容を出力する．
   /// @param[in] s 出力先のストリーム

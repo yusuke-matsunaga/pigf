@@ -164,6 +164,44 @@ Variable::operator&&(const Variable& right) const
   return false;
 }
 
+// @brief ベクタ集合に対する価値を計算する．
+// @param[in] rv_list ベクタのリスト
+// @return 価値を返す．
+//
+// 価値はこの変数で区別されるベクタ対の個数の
+// 理想値に対する割合のこと．
+double
+Variable::value(const vector<const RegVect*>& rv_list) const
+{
+  ymuint64 n0 = 0;
+  ymuint64 n1 = 0;
+  for (vector<const RegVect*>::const_iterator p = rv_list.begin();
+       p != rv_list.end(); ++ p) {
+    const RegVect* rv = *p;
+    if ( rv->classify(*this) ) {
+      ++ n1;
+    }
+    else {
+      ++ n0;
+    }
+  }
+  ymuint64 nv = rv_list.size();
+  ymuint64 n_ideal = (nv * nv) / 4;
+  ymuint64 n = n0 * n1;
+  return static_cast<double>(n) / static_cast<double>(n_ideal);
+}
+
+// @brief ハッシュ値を返す．
+ymuint
+Variable::hash() const
+{
+  ymuint ans = 0U;
+  for (ymuint i = 0; i < nblk(); ++ i) {
+    ans ^= mBitVect[i];
+  }
+  return ans;
+}
+
 // @brief 等価比較
 // @param[in] right オペランド
 // @return 等しい時 true を返す．

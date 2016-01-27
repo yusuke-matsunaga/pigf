@@ -1,34 +1,51 @@
-﻿#ifndef VARHEAP_H
-#define VARHEAP_H
+﻿#ifndef VARPOOL_H
+#define VARPOOL_H
 
-/// @file VarHeap.h
-/// @brief VarHeap のヘッダファイル
+/// @file VarPool.h
+/// @brief VarPool のヘッダファイル
 /// @author Yusuke Matsunaga (松永 裕介)
 ///
-/// Copyright (C) 2014 Yusuke Matsunaga
+/// Copyright (C) 2016 Yusuke Matsunaga
 /// All rights reserved.
 
 
 #include "igf_nsdef.h"
 #include "Variable.h"
+#include "YmUtils/HashSet.h"
 
+BEGIN_NAMESPACE_YM
+
+template<>
+struct
+HashFunc<nsIgf::Variable>
+{
+  ymuint
+  operator()(const nsIgf::Variable& key) const
+  {
+    return key.hash();
+  }
+};
+
+END_NAMESPACE_YM
 
 BEGIN_NAMESPACE_YM_IGF
 
 //////////////////////////////////////////////////////////////////////
-/// @class VarHeap VarHeap.h "VarHeap.h"
-/// @brief 変数のヒープ木
+/// @class VarPool VarPool.h "VarPool.h"
+/// @brief 一定数の変数を貯めておくデータ構造
+///
+/// 溢れたら価値の最も低いものを捨てる．
 //////////////////////////////////////////////////////////////////////
-class VarHeap
+class VarPool
 {
 public:
 
   /// @brief コンストラクタ
   /// @param[in] num 確保するノード数
-  VarHeap(ymuint num);
+  VarPool(ymuint num);
 
   /// @brief デストラクタ
-  ~VarHeap();
+  ~VarPool();
 
 
 public:
@@ -57,14 +74,11 @@ public:
   /// @brief 変数を追加する．
   /// @param[in] var 追加する変数
   /// @param[in] value 価値
+  ///
+  /// 容量オーバーのときは最も価値の低い変数を捨てる．
   void
   put(const Variable& var,
       double value);
-
-  /// @brief 値が最小の要素を取り出す．
-  /// そのノードはヒープから取り除かれる．
-  void
-  pop_min();
 
   /// @brief 内容を出力する．
   /// @param[in] s 出力先のストリーム
@@ -81,7 +95,6 @@ private:
   {
     Variable mVar;
     double mValue;
-    Node* mLink;
   };
 
 
@@ -89,6 +102,11 @@ private:
   //////////////////////////////////////////////////////////////////////
   // 内部で用いられる関数
   //////////////////////////////////////////////////////////////////////
+
+  /// @brief 値が最小の要素を取り出す．
+  /// そのノードはヒープから取り除かれる．
+  void
+  pop_min();
 
   /// @brief 変数を適当な位置まで沈める．
   /// @param[in] pos 対象の変数の位置
@@ -125,6 +143,9 @@ private:
   // ヒープ木中にある変数の数
   ymuint mVarNum;
 
+  // ハッシュテーブル
+  HashSet<Variable> mHashTable;
+
 };
 
 
@@ -135,7 +156,7 @@ private:
 // @brief 確保されている変数の数を返す．
 inline
 ymuint
-VarHeap::size() const
+VarPool::size() const
 {
   return mVarNum;
 }
@@ -144,7 +165,7 @@ VarHeap::size() const
 // @param[in] pos 位置番号 ( 0 <= pos < size() )
 inline
 const Variable&
-VarHeap::var(ymuint pos) const
+VarPool::var(ymuint pos) const
 {
   ASSERT_COND( pos < size() );
   return mHeap[pos].mVar;
@@ -154,7 +175,7 @@ VarHeap::var(ymuint pos) const
 // @param[in] pos 位置番号 ( 0 <= pos < size() )
 inline
 double
-VarHeap::value(ymuint pos) const
+VarPool::value(ymuint pos) const
 {
   return mHeap[pos].mValue;
 }
@@ -162,7 +183,7 @@ VarHeap::value(ymuint pos) const
 // @brief ヒープが空の時 true を返す．
 inline
 bool
-VarHeap::empty() const
+VarPool::empty() const
 {
   return mVarNum == 0;
 }
@@ -174,7 +195,7 @@ VarHeap::empty() const
 // @retval 正の値 node1 が node2 より後ろにある．
 inline
 int
-VarHeap::compare(const Node& node1,
+VarPool::compare(const Node& node1,
 		 const Node& node2)
 {
   if ( node1.mValue > node2.mValue ) {
@@ -190,4 +211,4 @@ VarHeap::compare(const Node& node1,
 
 END_NAMESPACE_YM_IGF
 
-#endif // VARHEAP_H
+#endif // VARPOOL_H

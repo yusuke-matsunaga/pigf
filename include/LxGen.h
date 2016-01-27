@@ -1,0 +1,70 @@
+#ifndef LXGEN_H
+#define LXGEN_H
+
+/// @file LxGen.h
+/// @brief LxGen のヘッダファイル
+/// @author Yusuke Matsunaga (松永 裕介)
+///
+/// Copyright (C) 2016 Yusuke Matsunaga
+/// All rights reserved.
+
+
+#include "igf_nsdef.h"
+#include "YmUtils/RandGen.h"
+
+
+BEGIN_NAMESPACE_YM_IGF
+
+//////////////////////////////////////////////////////////////////////
+/// @class LxGen LxGen.h "LxGen.h"
+/// @brief 線形変換用の合成変数を生成するクラス
+//////////////////////////////////////////////////////////////////////
+class LxGen
+{
+public:
+
+  /// @brief コンストラクタ
+  LxGen();
+
+  /// @brief デストラクタ
+  ~LxGen();
+
+
+public:
+  //////////////////////////////////////////////////////////////////////
+  // 外部インターフェイス
+  //////////////////////////////////////////////////////////////////////
+
+  /// @brief 合成変数の生成を行う．
+  /// @param[in] rv_list 登録ベクタのリスト
+  /// @param[in] output_size 出力する合成変数の数
+  /// @param[out] var_list 結果の変数を入れるリスト
+  void
+  generate(const vector<const RegVect*>& rv_list,
+	   ymuint output_size,
+	   vector<Variable>& var_list);
+
+
+private:
+  //////////////////////////////////////////////////////////////////////
+  // 内部で用いられる関数
+  //////////////////////////////////////////////////////////////////////
+
+
+private:
+  //////////////////////////////////////////////////////////////////////
+  // データメンバ
+  //////////////////////////////////////////////////////////////////////
+
+  // 遷移を行うための乱数発生器
+  RandGen mRgMove;
+
+  // 受容/棄却を決めるための乱数発生器
+  RandGen mRgAccept;
+
+};
+
+END_NAMESPACE_YM_IGF
+
+
+#endif // LXGEN_H
