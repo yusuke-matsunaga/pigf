@@ -82,14 +82,14 @@ set (igugen_SOURCES
   )
 
 set (libigf_SOURCES
+  src/libigf/common/RvMgr.cc
+  src/libigf/common/Variable.cc
+  src/libigf/phf/PhfGraph.cc
   src/libigf/IGU.cc
   src/libigf/IguGen.cc
-  src/libigf/PhfGraph.cc
   src/libigf/RandHashGen.cc
-  src/libigf/RvMgr.cc
   src/libigf/SigFunc.cc
   src/libigf/VarHeap.cc
-  src/libigf/Variable.cc
   src/libigf/lxgen.cc
   src/libigf/lxgen_old.cc
   src/libigf/lxgen_orig.cc

@@ -8,9 +8,9 @@
 
 
 #include "IguGen.h"
-#include "PhfGraph.h"
-#include "PhfNode.h"
-#include "PhfEdge.h"
+#include "phf/PhfGraph.h"
+#include "phf/PhfNode.h"
+#include "phf/PhfEdge.h"
 #include "FuncVect.h"
 
 
