@@ -9,6 +9,7 @@
 
 #include "Partitioner.h"
 #include "SigFunc.h"
+#include "YmAlgo/BtgMatch.h"
 
 
 BEGIN_NAMESPACE_YM_IGF
@@ -27,6 +28,7 @@ Partitioner::~Partitioner()
 {
 }
 
+#if 1
 // @brief ベクタを分割する．
 // @param[in] vect_list ベクタのリスト
 // @param[in] sigfunc_list シグネチャ関数のリスト
@@ -136,6 +138,67 @@ Partitioner::cf_partition(const vector<const RegVect*>& vect_list,
 
   return true;
 }
+#else
+// @brief ベクタを分割する．
+// @param[in] vect_list ベクタのリスト
+// @param[in] sigfunc_list シグネチャ関数のリスト
+// @param[out] mapping 個々のベクタの割当結果を入れる配列
+// @return 分割が成功したら true を返し，割当結果を mapping に入れる．
+//
+// mapping[i] には i 番目のベクタの割当先の番号が入る．
+bool
+Partitioner::cf_partition(const vector<const RegVect*>& vect_list,
+			  const vector<const SigFunc*>& sigfunc_list,
+			  vector<ymuint>& mapping)
+{
+  ymuint n = vect_list.size();
+  ymuint m = sigfunc_list.size();
+  ymuint ns = 0;
+  vector<ymuint> sig_base(m + 1);
+  for (ymuint i = 0; i < m; ++ i) {
+    sig_base[i] = ns;
+    const SigFunc* sf = sigfunc_list[i];
+    ymuint ow = sf->output_width();
+    ymuint ns1 = 1UL << ow;
+    ns += ns1;
+  }
+  sig_base[m] = ns;
 
+  BtgMatch bm;
+  bm.set_size(n, ns);
+  for (ymuint i = 0; i < n; ++ i) {
+    const RegVect* rv = vect_list[i];
+    for (ymuint j = 0; j < m; ++ j) {
+      const SigFunc* sf = sigfunc_list[j];
+      ymuint sig = sf->eval(rv);
+      bm.add_edge(i, sig_base[j] + sig);
+    }
+  }
+
+  vector<ymuint> edge_list;
+  ymuint ans = bm.calc_match(edge_list);
+  if ( ans < n ) {
+    return false;
+  }
+
+  mapping.clear();
+  mapping.resize(n);
+  for (ymuint i = 0; i < edge_list.size(); ++ i) {
+    ymuint vect_id;
+    ymuint sig;
+    ymuint weight;
+    bm.edge_info(i, vect_id, sig, weight);
+    ymuint sig_id = m;
+    for (ymuint j = 0; ; ++ j) {
+      if ( sig < sig_base[j] ) {
+	sig_id = j - 1;
+	break;
+      }
+    }
+    mapping[vect_id] = sig_id;
+  }
+  return true;
+}
+#endif
 
 END_NAMESPACE_YM_IGF

@@ -14,6 +14,7 @@
 #include "SigFunc.h"
 #include "IguGen.h"
 #include "LxGen.h"
+#include "RandLxGen.h"
 #include "Partitioner.h"
 #include "YmUtils/PoptMainApp.h"
 #include "YmUtils/RandGen.h"
@@ -126,15 +127,19 @@ igugen(int argc,
   if ( popt_x.is_specified() ) {
     LxGen lxgen;
     lxgen.generate(rv_mgr.vect_list(), 1000, var_list);
-    return 0;
   }
   else if ( popt_x2.is_specified() ) {
     lxgen_old(rv_mgr, var_list);
   }
   else if ( popt_y.is_specified() ) {
+#if 0
     RandGen rg;
     ymuint ni = rv_mgr.vect_size();
     rand_lxgen(rv_mgr, rg, ni, var_list);
+#else
+    RandLxGen lxgen;
+    lxgen.generate(rv_mgr.vect_list(), 1000, var_list);
+#endif
   }
   else if ( popt_z.is_specified() ) {
     RandGen rg;
@@ -192,8 +197,10 @@ igugen(int argc,
     bool found = false;
     RandCombiGen rcg1(var_list.size(), p1);
     for (ymuint count = 0; count < count_limit; ++ count) {
+#if 0
       cout << "  " << count << " ...";
       cout.flush();
+#endif
       vector<const SigFunc*> sigfunc_list(m);
       for (ymuint i = 0; i < m; ++ i) {
 	SigFunc* f = nullptr;
@@ -213,7 +220,9 @@ igugen(int argc,
 	}
 	sigfunc_list[i] = f;
       }
+#if 0
       cout << endl;
+#endif
 
       const vector<const RegVect*>& vect_list = rv_mgr.vect_list();
       vector<ymuint> block_map;
