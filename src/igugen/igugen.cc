@@ -200,21 +200,34 @@ igugen(int argc,
     SigFuncGen sfgen;
     sfgen.init(vect_list, var_list, p1, m, 100, 3);
 
-    for (ymuint c = 0; c < count_limit; ++ c) {
+    for (ymuint c = 0; !found && c < count_limit; ++ c) {
       cout << "\r  " << setw(10) << c << " / " << count_limit;
       cout.flush();
       vector<const SigFunc*> sigfunc_list = sfgen.generate();
 
       vector<ymuint> block_map;
       bool stat = pt.cf_partition(vect_list, sigfunc_list, block_map);
+      if ( stat ) {
+	found = true;
+	// 検証する．
+	ymuint np = 1U << p1;
+	vector<vector<ymuint> > rmap(m);
+	for (ymuint i = 0; i < m; ++ i) {
+	  rmap[i].resize(np, false);
+	}
+	for (ymuint i = 0; i < vect_list.size(); ++ i) {
+	  const RegVect* rv = vect_list[i];
+	  ymuint bid = block_map[i];
+	  ymuint idx = sigfunc_list[bid]->eval(rv);
+	  if ( rmap[bid][idx] ) {
+	    cerr << "Error!: conflicts" << endl;
+	  }
+	  rmap[bid][idx] = true;
+	}
+      }
 
       for (ymuint i = 0; i < m; ++ i) {
 	delete sigfunc_list[i];
-      }
-
-      if ( stat ) {
-	found = true;
-	break;
       }
     }
 
