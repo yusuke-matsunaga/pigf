@@ -9,7 +9,7 @@
 
 #include "LxGen.h"
 #include "RegVect.h"
-#include "VarHeap.h"
+#include "VarPool.h"
 
 
 BEGIN_NAMESPACE_YM_IGF
@@ -58,8 +58,8 @@ LxGen::generate(const vector<const RegVect*>& rv_list,
     }
   }
 
-  // 変数を貯めておくヒープ
-  VarHeap var_heap(output_size);
+  // 変数を貯めておくプール
+  VarPool var_pool(output_size);
 
   // MCMC(MH法) で合成変数を生成する．
   // burn-in が必要なので output_size の2倍サンプリングを行う．
@@ -84,15 +84,16 @@ LxGen::generate(const vector<const RegVect*>& rv_list,
       }
     }
     // ここに来たということは受容された．
-    var_heap.put(new_var, new_val);
+    var_pool.put(new_var, new_val);
     cur_var = new_var;
   }
 
   // 結果を var_list に入れる．
+  ymuint n = var_pool.size();
   var_list.clear();
-  var_list.reserve(output_size);
-  for (ymuint i = 0; i < var_heap.size(); ++ i) {
-    const Variable& var = var_heap.var(i);
+  var_list.reserve(n);
+  for (ymuint i = 0; i < n; ++ i) {
+    const Variable& var = var_pool.var(i);
     var_list.push_back(var);
   }
 }

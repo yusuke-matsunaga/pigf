@@ -45,19 +45,20 @@ VarPool::put(const Variable& var,
     // 一杯だった．
     // 先頭の要素を捨てる．
     mHashTable.erase(mHeap[0].mVar);
-    -- mVarNum;
-    if ( mVarNum > 0 ) {
-      mHeap[0] = mHeap[mVarNum];
-      move_down(0);
-    }
+    // 代わりに新しい変数を入れる．
+    mHeap[0].mVar = var;
+    mHeap[0].mValue = value;
+    // 適切な位置まで降ろす．
+    move_down(0);
   }
-  // 末尾に追加して上に上げる．
-  ymuint pos = mVarNum;
-  ++ mVarNum;
-  mHeap[pos].mVar = var;
-  mHeap[pos].mValue = value;
-  move_up(pos);
-
+  else {
+    // 末尾に追加して上に上げる．
+    ymuint pos = mVarNum;
+    ++ mVarNum;
+    mHeap[pos].mVar = var;
+    mHeap[pos].mValue = value;
+    move_up(pos);
+  }
   // ハッシュに登録する．
   mHashTable.add(var);
 }
