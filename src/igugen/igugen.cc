@@ -16,6 +16,7 @@
 #include "LxGen.h"
 #include "RandLxGen.h"
 #include "Partitioner.h"
+#include "SigFuncGen.h"
 #include "YmUtils/PoptMainApp.h"
 #include "YmUtils/RandGen.h"
 #include "YmUtils/RandCombiGen.h"
@@ -192,39 +193,18 @@ igugen(int argc,
   Partitioner pt;
   RandHashGen rhg;
   RandGen rg;
+  const vector<const RegVect*>& vect_list = rv_mgr.vect_list();
   for ( ; ; ++ p1) {
     cout << " trying p = " << p1 << endl;
     bool found = false;
-    RandCombiGen rcg1(var_list.size(), p1);
-    for (ymuint count = 0; count < count_limit; ++ count) {
-#if 0
-      cout << "  " << count << " ...";
-      cout.flush();
-#endif
-      vector<const SigFunc*> sigfunc_list(m);
-      for (ymuint i = 0; i < m; ++ i) {
-	SigFunc* f = nullptr;
-	if ( popt_c.is_specified() ) {
-	  f = rhg.gen_func(n, p1, comp);
-	}
-	else {
-	  rcg1.generate(rg);
-	  vector<Variable> tmp_list;
-	  tmp_list.reserve(p1);
-	  for (ymuint j = 0; j < p1; ++ j) {
-	    ymuint idx = rcg1.elem(j);
-	    const Variable& var1 = var_list[idx];
-	    tmp_list.push_back(var1);
-	  }
-	  f = new SigFunc(tmp_list);
-	}
-	sigfunc_list[i] = f;
-      }
-#if 0
-      cout << endl;
-#endif
+    SigFuncGen sfgen;
+    sfgen.init(vect_list, var_list, p1, m, 100, 3);
 
-      const vector<const RegVect*>& vect_list = rv_mgr.vect_list();
+    for (ymuint c = 0; c < count_limit; ++ c) {
+      cout << "\r  " << setw(10) << c << " / " << count_limit;
+      cout.flush();
+      vector<const SigFunc*> sigfunc_list = sfgen.generate();
+
       vector<ymuint> block_map;
       bool stat = pt.cf_partition(vect_list, sigfunc_list, block_map);
 
@@ -234,18 +214,10 @@ igugen(int argc,
 
       if ( stat ) {
 	found = true;
-#if 0
-	ymuint exp_p = 1U << p1;
-	for (ymuint i = 0; i < m; ++ i) {
-	  cout << "Block#" << i << endl;
-	  for (ymuint j = 0; j < exp_p; ++ j) {
-	    cout << " " << map_list[i][j] << endl;
-	  }
-	}
-#endif
 	break;
       }
     }
+
     if ( found ) {
       break;
     }

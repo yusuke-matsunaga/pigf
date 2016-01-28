@@ -31,6 +31,8 @@ list ( APPEND CMAKE_MODULE_PATH
 
 include (FindDoxygen)
 
+# Python のバージョン指定
+set( Python_ADDITIONAL_VERSIONS 3.6 3.5 3.4 3.3 3.2 3.1 )
 include (FindPythonInterp)
 include (FindPythonLibs)
 
@@ -92,6 +94,7 @@ set (libigf_SOURCES
   src/libigf/Partitioner.cc
   src/libigf/RandHashGen.cc
   src/libigf/SigFunc.cc
+  src/libigf/SigFuncGen.cc
   src/libigf/VarHeap.cc
   src/libigf/VarPool.cc
   src/libigf/lxgen.cc
