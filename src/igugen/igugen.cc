@@ -17,12 +17,47 @@
 #include "RandLxGen.h"
 #include "Partitioner.h"
 #include "SigFuncGen.h"
+#include "RandSigFuncGen.h"
+#include "VarPool.h"
 #include "YmUtils/PoptMainApp.h"
 #include "YmUtils/RandGen.h"
 #include "YmUtils/RandCombiGen.h"
 
 
 BEGIN_NAMESPACE_YM_IGF
+
+BEGIN_NONAMESPACE
+
+// 変数集合の価値を計算する．
+double
+calc_val(const vector<const RegVect*>& rv_list,
+	 const SigFunc* sf)
+{
+  ymuint64 n = rv_list.size();
+  ymuint nb = sf->output_width();
+  ymuint np = 1U << nb;
+  vector<ymuint> c_array(np, 0);
+
+  for (ymuint i = 0; i < n; ++ i) {
+    const RegVect* rv = rv_list[i];
+    ymuint val = sf->eval(rv);
+    ++ c_array[val];
+  }
+
+  double ave = static_cast<double>(n) / static_cast<double>(np);
+  double sqsum = 0.0;
+  for (ymuint i = 0; i < np; ++ i) {
+    ymuint c1 = c_array[i];
+    if ( c1 > ave ) {
+      double diff = static_cast<double>(c1) - ave;
+      sqsum += diff;
+    }
+  }
+  double stdev = sqsum / n;
+  return exp(- stdev);
+}
+
+END_NONAMESPACE
 
 struct Lt
 {
@@ -127,7 +162,18 @@ igugen(int argc,
   vector<Variable> var_list;
   if ( popt_x.is_specified() ) {
     LxGen lxgen;
-    lxgen.generate(rv_mgr.vect_list(), 1000, var_list);
+    lxgen.init(rv_mgr.vect_list());
+    VarPool var_pool(1000);
+    for (ymuint i = 0; i < 10000; ++ i) {
+      double val;
+      Variable var = lxgen.generate(val);
+      var_pool.put(var, val);
+    }
+    var_list.clear();
+    var_list.reserve(var_pool.size());
+    for (ymuint i = 0; i < var_pool.size(); ++ i) {
+      var_list.push_back(var_pool.var(i));
+    }
   }
   else if ( popt_x2.is_specified() ) {
     lxgen_old(rv_mgr, var_list);
@@ -151,14 +197,14 @@ igugen(int argc,
     ymuint ni = rv_mgr.vect_size();
     for (ymuint i = 0; i < ni; ++ i) {
       Variable var1(ni, i);
-      ymuint val = rv_mgr.value(var1);
-      if ( val > 0 ) {
+      double val = var1.value(rv_mgr.vect_list());
+      if ( val > 0.0 ) {
 	var_list.push_back(var1);
       }
     }
   }
 
-  cout << "Phase-1 end" << endl;
+  cout << "Phase-1 end (" << var_list.size() << ")" << endl;
 
   ymuint comp = 1;
   if ( popt_c.is_specified() ) {
@@ -188,22 +234,30 @@ igugen(int argc,
     }
   }
 
-  IguGen pg;
-
   Partitioner pt;
-  RandHashGen rhg;
-  RandGen rg;
   const vector<const RegVect*>& vect_list = rv_mgr.vect_list();
   for ( ; ; ++ p1) {
     cout << " trying p = " << p1 << endl;
     bool found = false;
+#if 0
     SigFuncGen sfgen;
-    sfgen.init(vect_list, var_list, p1, m, 100, 3);
+    sfgen.init(vect_list, var_list, p1, m, 0, 1);
+#else
+    RandSigFuncGen sfgen;
+    sfgen.init(vect_list, var_list, p1, m);
+#endif
 
     for (ymuint c = 0; !found && c < count_limit; ++ c) {
       cout << "\r  " << setw(10) << c << " / " << count_limit;
       cout.flush();
       vector<const SigFunc*> sigfunc_list = sfgen.generate();
+      {
+	for (ymuint i = 0; i < m; ++ i) {
+	  const SigFunc* sf = sigfunc_list[i];
+	  double val = calc_val(vect_list, sf);
+	  cout << " " << setw(10) << val;
+	}
+      }
 
       vector<ymuint> block_map;
       bool stat = pt.cf_partition(vect_list, sigfunc_list, block_map);
@@ -230,6 +284,7 @@ igugen(int argc,
 	delete sigfunc_list[i];
       }
     }
+    cout << endl;
 
     if ( found ) {
       break;

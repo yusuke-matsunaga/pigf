@@ -10,6 +10,7 @@
 
 
 #include "igf_nsdef.h"
+#include "Variable.h"
 #include "YmUtils/RandGen.h"
 
 
@@ -35,20 +36,24 @@ public:
   // 外部インターフェイス
   //////////////////////////////////////////////////////////////////////
 
-  /// @brief 合成変数の生成を行う．
+  /// @brief 初期化を行う．
   /// @param[in] rv_list 登録ベクタのリスト
-  /// @param[in] output_size 出力する合成変数の数
-  /// @param[out] var_list 結果の変数を入れるリスト
   void
-  generate(const vector<const RegVect*>& rv_list,
-	   ymuint output_size,
-	   vector<Variable>& var_list);
+  init(const vector<const RegVect*>& rv_list);
+
+  /// @brief 合成変数の生成を行う．
+  Variable
+  generate(double& val);
 
 
 private:
   //////////////////////////////////////////////////////////////////////
   // 内部で用いられる関数
   //////////////////////////////////////////////////////////////////////
+
+  /// @brief 次の状態に遷移する．
+  void
+  next_move();
 
 
 private:
@@ -61,6 +66,18 @@ private:
 
   // 受容/棄却を決めるための乱数発生器
   RandGen mRgAccept;
+
+  // 登録ベクタのリスト
+  vector<const RegVect*> mRvList;
+
+  // プライマリ変数のリスト
+  vector<Variable> mPrimaryList;
+
+  // 現在の状態
+  Variable mCurState;
+
+  // 現在の値
+  double mCurVal;
 
 };
 

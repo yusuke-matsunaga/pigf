@@ -17,41 +17,40 @@ BEGIN_NAMESPACE_YM_IGF
 
 BEGIN_NONAMESPACE
 
-// var_list によって rv1 と rv2 が区別できるとき
-// true を返す．
-bool
-compare(const RegVect* rv1,
-	const RegVect* rv2,
-	const vector<Variable>& var_list)
-{
-  for (ymuint i = 0; i < var_list.size(); ++ i) {
-    const Variable& var = var_list[i];
-    if ( rv1->classify(var) != rv2->classify(var) ) {
-      return true;
-    }
-  }
-  return false;
-}
-
 // 変数集合の価値を計算する．
 double
 calc_val(const vector<const RegVect*>& rv_list,
 	 const vector<Variable>& var_list)
 {
+  return 0.5;
   ymuint64 n = rv_list.size();
-  ymuint64 c = 0;
-  for (ymuint i1 = 1; i1 < n; ++ i1) {
-    const RegVect* rv1 = rv_list[i1];
-    for (ymuint i2 = 0; i2 < i1; ++ i2) {
-      const RegVect* rv2 = rv_list[i2];
-      if ( compare(rv1, rv2, var_list) ) {
-	++ c;
+  ymuint nb = var_list.size();
+  ymuint np = 1U << nb;
+  vector<ymuint> c_array(np, 0);
+
+  for (ymuint i = 0; i < n; ++ i) {
+    const RegVect* rv = rv_list[i];
+    ymuint val = 0U;
+    for (ymuint j = 0; j < nb; ++ j) {
+      const Variable& var = var_list[j];
+      if ( rv->classify(var) ) {
+	val |= (1U << j);
       }
     }
+    ++ c_array[val];
   }
-  // 理想の値は n(n - 1) / 2
-  ymuint64 ideal = n * (n - 1)  / 2;
-  return static_cast<double>(c) / static_cast<double>(ideal);
+
+  double ave = static_cast<double>(n) / static_cast<double>(np);
+  double sqsum = 0.0;
+  for (ymuint i = 0; i < np; ++ i) {
+    ymuint c1 = c_array[i];
+    if ( c1 > ave ) {
+      double diff = static_cast<double>(c1) - ave;
+      sqsum += diff;
+    }
+  }
+  double stdev = sqsum / n;
+  return exp(- stdev);
 }
 
 END_NONAMESPACE
@@ -119,10 +118,15 @@ SigFuncGen::generate()
 void
 SigFuncGen::body()
 {
+#if 0
   // 独立に mM 個の処理を行う．
   for (ymuint i = 0; i < mM; ++ i) {
     mCurStateArray[i].next_move(mRvList, mRgChoose, mRgAccept);
   }
+#else
+  ymuint pos = mRgChoose.int32() % mM;
+  mCurStateArray[pos].next_move(mRvList, mRgChoose, mRgAccept);
+#endif
 }
 
 // @brief 初期化を行う．

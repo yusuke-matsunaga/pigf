@@ -12,6 +12,7 @@
 #include "Variable.h"
 #include "LxGen.h"
 #include "RandLxGen.h"
+#include "VarPool.h"
 #include "YmUtils/PoptMainApp.h"
 
 
@@ -88,7 +89,18 @@ lxgen(int argc,
   }
   if ( popt_l.is_specified() ) {
     LxGen lxgen;
-    lxgen.generate(rv_mgr.vect_list(), n_sample, var_list);
+    lxgen.init(rv_mgr.vect_list());
+    VarPool var_pool(n_sample);
+    for (ymuint i = 0; i < n_sample * 10; ++ i) {
+      double val;
+      Variable var = lxgen.generate(val);
+      var_pool.put(var, val);
+    }
+    var_list.clear();
+    var_list.reserve(var_pool.size());
+    for (ymuint i = 0; i < var_pool.size(); ++ i) {
+      var_list.push_back(var_pool.var(i));
+    }
   }
   else if ( popt_r.is_specified() ) {
     RandLxGen lxgen;
