@@ -96,6 +96,7 @@ set (libigf_SOURCES
   src/libigf/SigFunc.cc
   src/libigf/SigFuncGen.cc
   src/libigf/RandSigFuncGen.cc
+  src/libigf/BasisChecker.cc
   src/libigf/VarHeap.cc
   src/libigf/VarPool.cc
   src/libigf/lxgen.cc
