@@ -59,6 +59,15 @@ public:
   // 外部インターフェイス
   //////////////////////////////////////////////////////////////////////
 
+  /// @brief 変数空間のサイズを返す．
+  ymuint
+  var_size() const;
+
+  /// @brief 指定された変数を含んでいたら true を返す．
+  /// @param[in] vid 変数番号 ( 0 <= vid < var_size() )
+  bool
+  check_var(ymuint vid) const;
+
   /// @brief 内容を表す変数番号のリストを返す．
   ///
   /// vector<> のコピーを作るので比較的コスト

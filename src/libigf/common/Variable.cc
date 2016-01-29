@@ -99,6 +99,22 @@ Variable::~Variable()
   delete [] mBitVect;
 }
 
+// @brief 変数空間のサイズを返す．
+ymuint
+Variable::var_size() const
+{
+  return mVarNum;
+}
+
+// @brief 指定された変数を含んでいたら true を返す．
+// @param[in] vid 変数番号 ( 0 <= vid < var_size() )
+bool
+Variable::check_var(ymuint vid) const
+{
+  ASSERT_COND( vid < var_size() );
+  return static_cast<bool>((mBitVect[blk(vid)] >> sft(vid)) & 1UL);
+}
+
 // @brief 内容を表す変数番号のリストを返す．
 //
 // vector<> のコピーを作るので比較的コスト

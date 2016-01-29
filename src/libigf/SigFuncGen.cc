@@ -8,6 +8,7 @@
 
 
 #include "SigFuncGen.h"
+#include "BasisChecker.h"
 #include "RegVect.h"
 #include "SigFunc.h"
 #include "Variable.h"
@@ -55,6 +56,7 @@ calc_val(const vector<const RegVect*>& rv_list,
 }
 
 END_NONAMESPACE
+
 
 //////////////////////////////////////////////////////////////////////
 // クラス SigFuncGen
@@ -136,6 +138,28 @@ SigFuncGen::FuncState::init(const vector<const RegVect*>& rv_list,
 			    ymuint width,
 			    RandGen& rg1)
 {
+  // 候補リストを作る．
+  vector<Variable> tmp_list = var_list;
+  ymuint nv = rv_list[0]->size();
+  mCandList.clear();
+  mCandList.reserve(nv);
+  for (ymuint i = 0; i < nv; ++ i) {
+    for ( ; ; ) {
+      ymuint n = tmp_list.size();
+      ASSERT_COND( n > 0 );
+      ymuint pos = rg1.int32() % n;
+      Variable var = tmp_list[pos];
+      tmp_list[pos] = tmp_list[n - 1];
+      tmp_list.erase(tmp_list.end() - 1, tmp_list.end());
+      mCandList.push_back(var);
+      BasisChecker bc;
+      if ( bc.check(mCandList) ) {
+	break;
+      }
+      mCandList.pop_back();
+    }
+  }
+
   mCurState.clear();
   mCurState.resize(width);
 
