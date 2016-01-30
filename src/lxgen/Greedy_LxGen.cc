@@ -1,13 +1,13 @@
 
-/// @file RandLxGen.cc
-/// @brief RandLxGen の実装ファイル
+/// @file Greedy_LxGen.cc
+/// @brief Greedy_LxGen の実装ファイル
 /// @author Yusuke Matsunaga (松永 裕介)
 ///
 /// Copyright (C) 2016 Yusuke Matsunaga
 /// All rights reserved.
 
 
-#include "RandLxGen.h"
+#include "Greedy_LxGen.h"
 #include "RegVect.h"
 #include "Variable.h"
 
@@ -15,28 +15,28 @@
 BEGIN_NAMESPACE_YM_IGF
 
 //////////////////////////////////////////////////////////////////////
-// クラス RandLxGen
+// クラス Greedy_LxGen
 //////////////////////////////////////////////////////////////////////
 
 // @brief コンストラクタ
-RandLxGen::RandLxGen()
+Greedy_LxGen::Greedy_LxGen()
 {
 }
 
 // @brief デストラクタ
-RandLxGen::~RandLxGen()
+Greedy_LxGen::~Greedy_LxGen()
 {
 }
 
 // @brief 合成変数の生成を行う．
 // @param[in] rv_list 登録ベクタのリスト
-// @param[in] output_size 出力する合成変数の数
+// @param[in] req_num 出力する合成変数の数
 // @param[out] var_list 結果の変数を入れるリスト
 //
 // var_list の内容の Variable は呼んだ側で解放すること．
 void
-RandLxGen::generate(const vector<const RegVect*>& rv_list,
-		    ymuint output_size,
+Greedy_LxGen::generate(const vector<const RegVect*>& rv_list,
+		    ymuint req_num,
 		    vector<Variable>& var_list)
 {
   // 初期変数集合を作る．
@@ -61,8 +61,8 @@ RandLxGen::generate(const vector<const RegVect*>& rv_list,
   // 単純なランダムサンプリングで合成変数を作る．
   // 重複チェックはしていない．
   var_list.clear();
-  var_list.reserve(output_size);
-  for (ymuint i = 0; i < output_size; ++ i) {
+  var_list.reserve(req_num);
+  for (ymuint i = 0; i < req_num; ++ i) {
     // var_list の中からランダムに選ぶ．
     // といっても choose_var() を呼ぶとその変数は
     // リストから取り除かれるのでコピーを使う．
@@ -92,7 +92,7 @@ RandLxGen::generate(const vector<const RegVect*>& rv_list,
 //
 // 選ばれた変数は var_list から取り除かれる．
 Variable
-RandLxGen::choose_var(vector<Variable>& var_list)
+Greedy_LxGen::choose_var(vector<Variable>& var_list)
 {
   ymuint n = var_list.size();
   ymuint pos = mRandGen.int32() % n;

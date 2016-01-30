@@ -1,33 +1,35 @@
-#ifndef RANDLXGEN_H
-#define RANDLXGEN_H
+#ifndef GREEDY_LXGEN_H
+#define GREEDY_LXGEN_H
 
-/// @file RandLxGen.h
-/// @brief RandLxGen のヘッダファイル
+/// @file Greedy_LxGen.h
+/// @brief Greedy_LxGen のヘッダファイル
 /// @author Yusuke Matsunaga (松永 裕介)
 ///
 /// Copyright (C) 2016 Yusuke Matsunaga
 /// All rights reserved.
 
 
-#include "igf_nsdef.h"
+#include "LxGen.h"
 #include "YmUtils/RandGen.h"
 
 
 BEGIN_NAMESPACE_YM_IGF
 
 //////////////////////////////////////////////////////////////////////
-/// @class RandLxGen RandLxGen.h "RandLxGen.h"
+/// @class Greedy_LxGen Greedy_LxGen.h "Greedy_LxGen.h"
 /// @brief 線形変換用の合成変数を生成するクラス
 //////////////////////////////////////////////////////////////////////
-class RandLxGen
+class Greedy_LxGen :
+  public LxGen
 {
 public:
 
   /// @brief コンストラクタ
-  RandLxGen();
+  Greedy_LxGen();
 
   /// @brief デストラクタ
-  ~RandLxGen();
+  virtual
+  ~Greedy_LxGen();
 
 
 public:
@@ -37,11 +39,12 @@ public:
 
   /// @brief 合成変数の生成を行う．
   /// @param[in] rv_list 登録ベクタのリスト
-  /// @param[in] output_size 出力する合成変数の数
-  /// @param[out] var_list 結果の変数を入れるリスト
+  /// @param[in] req_num 生成する変数の数
+  /// @param[out] var_list 生成された変数を格納するリスト
+  virtual
   void
   generate(const vector<const RegVect*>& rv_list,
-	   ymuint output_size,
+	   ymuint req_num,
 	   vector<Variable>& var_list);
 
 
@@ -70,5 +73,4 @@ private:
 
 END_NAMESPACE_YM_IGF
 
-
-#endif // RANDLXGEN_H
+#endif // GREEDY_LXGEN_H

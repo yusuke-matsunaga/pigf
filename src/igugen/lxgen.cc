@@ -11,7 +11,7 @@
 #include "RegVect.h"
 #include "Variable.h"
 #include "LxGen.h"
-#include "RandLxGen.h"
+
 #include "VarPool.h"
 #include "YmUtils/PoptMainApp.h"
 
@@ -87,25 +87,14 @@ lxgen(int argc,
   if ( popt_s.is_specified() ) {
     n_sample = popt_s.val();
   }
+  LxGen* lxgen = nullptr;
   if ( popt_l.is_specified() ) {
-    LxGen lxgen;
-    lxgen.init(rv_mgr.vect_list());
-    VarPool var_pool(n_sample);
-    for (ymuint i = 0; i < n_sample * 10; ++ i) {
-      double val;
-      Variable var = lxgen.generate(val);
-      var_pool.put(var, val);
-    }
-    var_list.clear();
-    var_list.reserve(var_pool.size());
-    for (ymuint i = 0; i < var_pool.size(); ++ i) {
-      var_list.push_back(var_pool.var(i));
-    }
+    lxgen = LxGen::new_obj("MCMC");
   }
   else if ( popt_r.is_specified() ) {
-    RandLxGen lxgen;
-    lxgen.generate(rv_mgr.vect_list(), n_sample, var_list);
+    lxgen = LxGen::new_obj("Greedy");
   }
+  lxgen->generate(rv_mgr.vect_list(), n_sample, var_list);
 
   // 度数分布を求める．
   ymuint h_array[20];

@@ -143,6 +143,7 @@ SigFuncGen::FuncState::init(const vector<const RegVect*>& rv_list,
 			    RandGen& rg1)
 {
   // 候補リストを作る．
+#if 0
   vector<Variable> tmp_list = var_list;
   ymuint nv = rv_list[0]->size();
   mCandList.clear();
@@ -163,6 +164,9 @@ SigFuncGen::FuncState::init(const vector<const RegVect*>& rv_list,
       mCandList.pop_back();
     }
   }
+#else
+  mCandList = var_list;
+#endif
 
   mCurState.clear();
   mCurState.resize(width);

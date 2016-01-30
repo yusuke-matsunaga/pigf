@@ -27,12 +27,12 @@ class FuncVect
 public:
 
   /// @brief コンストラクタ
-  /// @param[in] max_val 値の最大値
   /// @param[in] input_size 入力の要素数
+  /// @param[in] max_val 値の最大値
   ///
   /// max_val は正確には最大値＋１
-  FuncVect(ymuint max_val,
-	   ymuint input_size);
+  FuncVect(ymuint input_size,
+	   ymuint max_val);
 
   /// @brief デストラクタ
   ~FuncVect();

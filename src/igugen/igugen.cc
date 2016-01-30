@@ -14,7 +14,6 @@
 #include "SigFunc.h"
 #include "IguGen.h"
 #include "LxGen.h"
-#include "RandLxGen.h"
 #include "Partitioner.h"
 #include "SigFuncGen.h"
 #include "RandSigFuncGen.h"
@@ -74,6 +73,10 @@ lxgen(RvMgr& rv_mgr,
       vector<Variable>& var_list);
 
 void
+old_lxgen(RvMgr& rv_mgr,
+	  vector<Variable>& var_list);
+
+void
 lxgen_old(RvMgr& rv_mgr,
 	  vector<Variable>& var_list);
 
@@ -104,25 +107,8 @@ igugen(int argc,
   main_app.add_option(&popt_n);
 
   // x オプション
-  PoptNone popt_x("xor", 'x', "linear transformation");
+  PoptStr popt_x("lx", 0, "linear transformation", "<METHOD-STR>");
   main_app.add_option(&popt_x);
-
-  // x オプション
-  PoptNone popt_x2("xor_old", 'X', "linear transformation(old)");
-  main_app.add_option(&popt_x2);
-
-  // y オプション
-  PoptNone popt_y("rand_xor", 'y', "linear transformation(random)");
-  main_app.add_option(&popt_y);
-
-  // z オプション
-  PoptNone popt_z("rand_xor", 'z', "linear transformation(original)");
-  main_app.add_option(&popt_z);
-
-  // c オプション
-  PoptUint popt_c("compose", 'c',
-		  "compose mode", "max_degree");
-  main_app.add_option(&popt_c);
 
   // l オプション
   PoptUint popt_l("count_limit", 'l',
@@ -161,37 +147,8 @@ igugen(int argc,
 
   vector<Variable> var_list;
   if ( popt_x.is_specified() ) {
-    LxGen lxgen;
-    lxgen.init(rv_mgr.vect_list());
-    VarPool var_pool(1000);
-    for (ymuint i = 0; i < 10000; ++ i) {
-      double val;
-      Variable var = lxgen.generate(val);
-      var_pool.put(var, val);
-    }
-    var_list.clear();
-    var_list.reserve(var_pool.size());
-    for (ymuint i = 0; i < var_pool.size(); ++ i) {
-      var_list.push_back(var_pool.var(i));
-    }
-  }
-  else if ( popt_x2.is_specified() ) {
-    lxgen_old(rv_mgr, var_list);
-  }
-  else if ( popt_y.is_specified() ) {
-#if 0
-    RandGen rg;
-    ymuint ni = rv_mgr.vect_size();
-    rand_lxgen(rv_mgr, rg, ni, var_list);
-#else
-    RandLxGen lxgen;
-    lxgen.generate(rv_mgr.vect_list(), 1000, var_list);
-#endif
-  }
-  else if ( popt_z.is_specified() ) {
-    RandGen rg;
-    ymuint ni = rv_mgr.vect_size();
-    lxgen_orig(rv_mgr, var_list);
+    LxGen* lxgen = LxGen::new_obj(popt_x.val());
+    lxgen->generate(rv_mgr.vect_list(), 1000, var_list);
   }
   else {
     ymuint ni = rv_mgr.vect_size();
@@ -205,11 +162,6 @@ igugen(int argc,
   }
 
   cout << "Phase-1 end (" << var_list.size() << ")" << endl;
-
-  ymuint comp = 1;
-  if ( popt_c.is_specified() ) {
-    comp = popt_c.val();
-  }
 
   ymuint m = 1;
   if ( popt_m.is_specified() ) {
@@ -239,7 +191,7 @@ igugen(int argc,
   for ( ; ; ++ p1) {
     cout << " trying p = " << p1 << endl;
     bool found = false;
-#if 0
+#if 1
     SigFuncGen sfgen;
     sfgen.init(vect_list, var_list, p1, m, 0, 1);
 #else

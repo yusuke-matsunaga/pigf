@@ -1,36 +1,35 @@
-#ifndef LXGEN_H
-#define LXGEN_H
+#ifndef SIMPLE_LXGEN_H
+#define SIMPLE_LXGEN_H
 
-/// @file LxGen.h
-/// @brief LxGen のヘッダファイル
+/// @file SimpleLxGen.h
+/// @brief SimpleLxGen のヘッダファイル
 /// @author Yusuke Matsunaga (松永 裕介)
 ///
 /// Copyright (C) 2016 Yusuke Matsunaga
 /// All rights reserved.
 
 
-#include "igf_nsdef.h"
-#include "Variable.h"
+#include "LxGen.h"
+#include "YmUtils/RandGen.h"
 
 
 BEGIN_NAMESPACE_YM_IGF
 
 //////////////////////////////////////////////////////////////////////
-/// @class LxGen LxGen.h "LxGen.h"
-/// @brief 線形変換用の合成変数を生成する純粋仮想基底クラス
+/// @class Simple_LxGen Simple_LxGen.h "Simple_LxGen.h"
+/// @brief 線形変換用の合成変数を生成するクラス
 //////////////////////////////////////////////////////////////////////
-class LxGen
+class Simple_LxGen :
+  public LxGen
 {
 public:
 
-  /// @brief インスタンスを生成するクラスメソッド
-  /// @param[in] method アルゴリズム名
-  static
-  LxGen*
-  new_obj(string method);
+  /// @brief コンストラクタ
+  Simple_LxGen();
 
   /// @brief デストラクタ
-  ~LxGen() { }
+  virtual
+  ~Simple_LxGen();
 
 
 public:
@@ -46,11 +45,19 @@ public:
   void
   generate(const vector<const RegVect*>& rv_list,
 	   ymuint req_num,
-	   vector<Variable>& var_list) = 0;
+	   vector<Variable>& var_list);
+
+
+private:
+  //////////////////////////////////////////////////////////////////////
+  // データメンバ
+  //////////////////////////////////////////////////////////////////////
+
+  // 変数を選ぶための乱数発生器
+  RandGen mRandGen;
 
 };
 
 END_NAMESPACE_YM_IGF
 
-
-#endif // LXGEN_H
+#endif // SIMPLE_LXGEN_H

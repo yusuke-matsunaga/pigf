@@ -1,36 +1,34 @@
-#ifndef LXGEN_H
-#define LXGEN_H
+#ifndef SHIFT_LXGEN_H
+#define SHIFT_LXGEN_H
 
-/// @file LxGen.h
-/// @brief LxGen のヘッダファイル
+/// @file Shift_LxGen.h
+/// @brief Shift_LxGen のヘッダファイル
 /// @author Yusuke Matsunaga (松永 裕介)
 ///
 /// Copyright (C) 2016 Yusuke Matsunaga
 /// All rights reserved.
 
 
-#include "igf_nsdef.h"
-#include "Variable.h"
+#include "LxGen.h"
 
 
 BEGIN_NAMESPACE_YM_IGF
 
 //////////////////////////////////////////////////////////////////////
-/// @class LxGen LxGen.h "LxGen.h"
-/// @brief 線形変換用の合成変数を生成する純粋仮想基底クラス
+/// @class Shift_LxGen Shift_LxGen.h "Shift_LxGen.h"
+/// @brief 線形変換用の合成変数を生成するクラス
 //////////////////////////////////////////////////////////////////////
-class LxGen
+class Shift_LxGen :
+  public LxGen
 {
 public:
 
-  /// @brief インスタンスを生成するクラスメソッド
-  /// @param[in] method アルゴリズム名
-  static
-  LxGen*
-  new_obj(string method);
+  /// @brief コンストラクタ
+  Shift_LxGen();
 
   /// @brief デストラクタ
-  ~LxGen() { }
+  virtual
+  ~Shift_LxGen();
 
 
 public:
@@ -46,11 +44,24 @@ public:
   void
   generate(const vector<const RegVect*>& rv_list,
 	   ymuint req_num,
-	   vector<Variable>& var_list) = 0;
+	   vector<Variable>& var_list);
+
+
+private:
+  //////////////////////////////////////////////////////////////////////
+  // 内部で用いられる関数
+  //////////////////////////////////////////////////////////////////////
+
+
+private:
+  //////////////////////////////////////////////////////////////////////
+  // データメンバ
+  //////////////////////////////////////////////////////////////////////
+
 
 };
 
+
 END_NAMESPACE_YM_IGF
 
-
-#endif // LXGEN_H
+#endif // SHIFT_LXGEN_H

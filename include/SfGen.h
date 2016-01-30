@@ -1,8 +1,8 @@
-#ifndef LXGEN_H
-#define LXGEN_H
+#ifndef SFGEN_H
+#define SFGEN_H
 
-/// @file LxGen.h
-/// @brief LxGen のヘッダファイル
+/// @file SfGen.h
+/// @brief SfGen のヘッダファイル
 /// @author Yusuke Matsunaga (松永 裕介)
 ///
 /// Copyright (C) 2016 Yusuke Matsunaga
@@ -10,27 +10,27 @@
 
 
 #include "igf_nsdef.h"
-#include "Variable.h"
 
 
 BEGIN_NAMESPACE_YM_IGF
 
 //////////////////////////////////////////////////////////////////////
-/// @class LxGen LxGen.h "LxGen.h"
-/// @brief 線形変換用の合成変数を生成する純粋仮想基底クラス
+/// @class SfGen SfGen.h "SfGen.h"
+/// @brief SigFunc を生成する純粋仮想基底クラス
 //////////////////////////////////////////////////////////////////////
-class LxGen
+class SfGen
 {
 public:
 
-  /// @brief インスタンスを生成するクラスメソッド
+  /// @brief インスタンスを生成するメソッド
   /// @param[in] method アルゴリズム名
   static
-  LxGen*
+  SfGen*
   new_obj(string method);
 
   /// @brief デストラクタ
-  ~LxGen() { }
+  virtual
+  ~SfGen();
 
 
 public:
@@ -38,19 +38,20 @@ public:
   // 外部インターフェイス
   //////////////////////////////////////////////////////////////////////
 
-  /// @brief 合成変数の生成を行う．
+  /// @brief SigFunc の生成を行う．
   /// @param[in] rv_list 登録ベクタのリスト
-  /// @param[in] req_num 生成する変数の数
-  /// @param[out] var_list 生成された変数を格納するリスト
+  /// @param[in] base_list 基底変数のリスト
+  /// @param[in] m 多重度
+  /// @param[out] sigfunc_list 生成された SigFunc を格納するリスト
   virtual
   void
   generate(const vector<const RegVect*>& rv_list,
-	   ymuint req_num,
-	   vector<Variable>& var_list) = 0;
+	   const vector<Variable>& base_list,
+	   ymuint m,
+	   vector<SigFunc*>& sigfunc_list) = 0;
 
 };
 
 END_NAMESPACE_YM_IGF
 
-
-#endif // LXGEN_H
+#endif // SFGEN_H

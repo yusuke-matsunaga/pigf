@@ -1,13 +1,13 @@
 
-/// @file LxGen.cc
-/// @brief LxGen の実装ファイル
+/// @file MCMC_LxGen.cc
+/// @brief MCMC_LxGen の実装ファイル
 /// @author Yusuke Matsunaga (松永 裕介)
 ///
 /// Copyright (C) 2016 Yusuke Matsunaga
 /// All rights reserved.
 
 
-#include "LxGen.h"
+#include "MCMC_LxGen.h"
 #include "RegVect.h"
 #include "VarPool.h"
 
@@ -15,23 +15,47 @@
 BEGIN_NAMESPACE_YM_IGF
 
 //////////////////////////////////////////////////////////////////////
-// クラス LxGen
+// クラス MCMC_LxGen
 //////////////////////////////////////////////////////////////////////
 
 // @brief コンストラクタ
-LxGen::LxGen()
+MCMC_LxGen::MCMC_LxGen()
 {
 }
 
 // @brief デストラクタ
-LxGen::~LxGen()
+MCMC_LxGen::~MCMC_LxGen()
 {
+}
+
+// @brief 合成変数の生成を行う．
+// @param[in] rv_list 登録ベクタのリスト
+// @param[in] req_num 生成する変数の数
+// @param[out] var_list 生成された変数を格納するリスト
+void
+MCMC_LxGen::generate(const vector<const RegVect*>& rv_list,
+		     ymuint req_num,
+		     vector<Variable>& var_list)
+{
+  init(rv_list);
+
+  VarPool var_pool(1000);
+  for (ymuint i = 0; i < 10000; ++ i) {
+    next_move();
+    var_pool.put(mCurState, mCurVal);
+  }
+
+  var_list.clear();
+  var_list.reserve(var_pool.size());
+  for (ymuint i = 0; i < var_pool.size(); ++ i) {
+    var_list.push_back(var_pool.var(i));
+  }
 }
 
 // @brief 初期化を行う．
 // @param[in] rv_list 登録ベクタのリスト
 void
-LxGen::init(const vector<const RegVect*>& rv_list)
+MCMC_LxGen::init(const vector<const RegVect*>& rv_list)
 {
   // 初期変数集合を作る．
   // 基本的にはすべての変数が対象だが，
@@ -61,18 +85,9 @@ LxGen::init(const vector<const RegVect*>& rv_list)
   mCurVal = mCurState.value(mRvList);
 }
 
-// @brief 合成変数の生成を行う．
-Variable
-LxGen::generate(double& val)
-{
-  next_move();
-  val = mCurVal;
-  return mCurState;
-}
-
 // @brief 次の状態に遷移する．
 void
-LxGen::next_move()
+MCMC_LxGen::next_move()
 {
   // mPrimaryList の中からランダムに選ぶ．
   ymuint pos = mRgMove.int32() % mPrimaryList.size();

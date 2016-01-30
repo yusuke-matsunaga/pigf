@@ -83,26 +83,31 @@ set (igugen_SOURCES
   src/igugen/igugen.cc
   )
 
+set (common_SOURCES
+  src/common/BasisChecker.cc
+  src/common/Partitioner.cc
+  src/common/RvMgr.cc
+  src/common/SigFunc.cc
+  src/common/VarPool.cc
+  src/common/Variable.cc
+  )
+
+set (lxgen_SOURCES
+  src/lxgen/Greedy_LxGen.cc
+  src/lxgen/MCMC_LxGen.cc
+  src/lxgen/LxGen.cc
+  src/lxgen/Shift_LxGen.cc
+  src/lxgen/Simple_LxGen.cc
+  src/lxgen/VarHeap.cc
+  )
+
 set (libigf_SOURCES
-  src/libigf/common/RvMgr.cc
-  src/libigf/common/Variable.cc
   src/libigf/phf/PhfGraph.cc
   src/libigf/IGU.cc
   src/libigf/IguGen.cc
-  src/libigf/LxGen.cc
-  src/libigf/RandLxGen.cc
-  src/libigf/Partitioner.cc
   src/libigf/RandHashGen.cc
-  src/libigf/SigFunc.cc
   src/libigf/SigFuncGen.cc
   src/libigf/RandSigFuncGen.cc
-  src/libigf/BasisChecker.cc
-  src/libigf/VarHeap.cc
-  src/libigf/VarPool.cc
-  src/libigf/lxgen.cc
-  src/libigf/lxgen_old.cc
-  src/libigf/lxgen_orig.cc
-  src/libigf/rand_lxgen.cc
   )
 
 
@@ -112,7 +117,10 @@ set (libigf_SOURCES
 
 ym_add_library (libigf
   STATIC
-  ${libigf_SOURCES})
+  ${libigf_SOURCES}
+  ${common_SOURCES}
+  ${lxgen_SOURCES}
+  )
 
 
 # ===================================================================
@@ -136,7 +144,6 @@ target_link_libraries(igugen
   ym_algo
   ym_utils
   )
-
 
 add_executable(lxgen
   src/igugen/lxgen.cc
