@@ -10,6 +10,8 @@
 #include "LxGen.h"
 #include "Greedy_LxGen.h"
 #include "MCMC_LxGen.h"
+#include "MCMC2_LxGen.h"
+#include "MCMC3_LxGen.h"
 #include "Shift_LxGen.h"
 #include "Simple_LxGen.h"
 
@@ -26,6 +28,12 @@ LxGen::new_obj(string method)
   }
   if ( method == "MCMC" ) {
     return new MCMC_LxGen();
+  }
+  if ( method == "MCMC2" ) {
+    return new MCMC2_LxGen();
+  }
+  if ( method == "MCMC3" ) {
+    return new MCMC3_LxGen();
   }
   if ( method == "Shift" ) {
     return new Shift_LxGen();

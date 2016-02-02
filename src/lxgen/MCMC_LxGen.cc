@@ -39,8 +39,8 @@ MCMC_LxGen::generate(const vector<const RegVect*>& rv_list,
 {
   init(rv_list);
 
-  VarPool var_pool(1000);
-  for (ymuint i = 0; i < 10000; ++ i) {
+  VarPool var_pool(req_num);
+  for (ymuint i = 0; i < req_num * 5; ++ i) {
     next_move();
     var_pool.put(mCurState, mCurVal);
   }
@@ -82,7 +82,7 @@ MCMC_LxGen::init(const vector<const RegVect*>& rv_list)
   // 初期解を作る．
   ymuint vid = mRgMove.int32() % var_num;
   mCurState = Variable(var_num, vid);
-  mCurVal = mCurState.value(mRvList);
+  mCurVal = value(mCurState);
 }
 
 // @brief 次の状態に遷移する．
@@ -94,7 +94,7 @@ MCMC_LxGen::next_move()
   const Variable& var1 = mPrimaryList[pos];
   // 今の変数と合成する．
   Variable new_var = mCurState * var1;
-  double new_val = new_var.value(mRvList);
+  double new_val = value(new_var);
   if ( new_val < mCurVal ) {
     // 価値が減っていたら価値に基づいたランダム判定を行う．
     double ratio = new_val / mCurVal;
@@ -107,6 +107,20 @@ MCMC_LxGen::next_move()
   // ここに来たということは受容された．
   mCurState = new_var;
   mCurVal = new_val;
+}
+
+// @brief 変数の価値を計算する．
+double
+MCMC_LxGen::value(const Variable& var)
+{
+  return var.value(mRvList);
+}
+
+// @brief 登録ベクタのリストを返す．
+const vector<const RegVect*>&
+MCMC_LxGen::rv_list() const
+{
+  return mRvList;
 }
 
 END_NAMESPACE_YM_IGF

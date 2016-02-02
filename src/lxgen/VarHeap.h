@@ -177,10 +177,10 @@ int
 VarHeap::compare(const Node& node1,
 		 const Node& node2)
 {
-  if ( node1.mValue > node2.mValue ) {
+  if ( node1.mValue < node2.mValue ) {
     return -1;
   }
-  else if ( node1.mValue < node2.mValue ) {
+  else if ( node1.mValue > node2.mValue ) {
     return 1;
   }
   else {

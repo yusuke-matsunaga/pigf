@@ -95,6 +95,8 @@ set (common_SOURCES
 set (lxgen_SOURCES
   src/lxgen/Greedy_LxGen.cc
   src/lxgen/MCMC_LxGen.cc
+  src/lxgen/MCMC2_LxGen.cc
+  src/lxgen/MCMC3_LxGen.cc
   src/lxgen/LxGen.cc
   src/lxgen/Shift_LxGen.cc
   src/lxgen/Simple_LxGen.cc
