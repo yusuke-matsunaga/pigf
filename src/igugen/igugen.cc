@@ -68,28 +68,6 @@ struct Lt
   }
 };
 
-void
-lxgen(RvMgr& rv_mgr,
-      vector<Variable>& var_list);
-
-void
-old_lxgen(RvMgr& rv_mgr,
-	  vector<Variable>& var_list);
-
-void
-lxgen_old(RvMgr& rv_mgr,
-	  vector<Variable>& var_list);
-
-void
-lxgen_orig(RvMgr& rv_mgr,
-	   vector<Variable>& var_list);
-
-void
-rand_lxgen(RvMgr& rv_mgr,
-	   RandGen& rg,
-	   ymuint n,
-	   vector<Variable>& var_list);
-
 int
 igugen(int argc,
        const char** argv)
@@ -101,14 +79,14 @@ igugen(int argc,
 		  "specify the number of hash functions", "<INT>");
   main_app.add_option(&popt_m);
 
-  // n オプション
-  PoptNone popt_n("naive", 'n',
-		  "naive parallel sieve method");
-  main_app.add_option(&popt_n);
+  // lx オプション
+  PoptStr popt_lx("lx", 0, "linear transformation", "<METHOD-STR>");
+  main_app.add_option(&popt_lx);
 
-  // x オプション
-  PoptStr popt_x("lx", 0, "linear transformation", "<METHOD-STR>");
-  main_app.add_option(&popt_x);
+  // n オプション
+  PoptInt popt_n(nullptr, 'n',
+		 "specify the number of basis", "<INT>>");
+  main_app.add_option(&popt_n);
 
   // l オプション
   PoptUint popt_l("count_limit", 'l',
@@ -146,9 +124,13 @@ igugen(int argc,
        << "# of index bits: " << rv_mgr.index_size() << endl;
 
   vector<Variable> var_list;
-  if ( popt_x.is_specified() ) {
-    LxGen* lxgen = LxGen::new_obj(popt_x.val());
-    lxgen->generate(rv_mgr.vect_list(), 1000, var_list);
+  if ( popt_lx.is_specified() ) {
+    ymuint n = 1000;
+    if ( popt_n.is_specified() ) {
+      n = popt_n.val();
+    }
+    LxGen* lxgen = LxGen::new_obj(popt_lx.val());
+    lxgen->generate(rv_mgr.vect_list(), n, var_list);
   }
   else {
     ymuint ni = rv_mgr.vect_size();
