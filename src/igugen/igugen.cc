@@ -88,10 +88,25 @@ igugen(int argc,
 		 "specify the number of basis", "<INT>>");
   main_app.add_option(&popt_n);
 
+  // p オプション
+  PoptInt popt_p("signature_width", 'p',
+		 "specify the signature width", "<INT>");
+  main_app.add_option(&popt_p);
+
   // l オプション
   PoptUint popt_l("count_limit", 'l',
 		  "specify count limit", "<INT>");
   main_app.add_option(&popt_l);
+
+  // s オプション
+  PoptNone popt_s("statistics", 's',
+		  "statistics mode");
+  main_app.add_option(&popt_s);
+
+  // v オプション
+  PoptNone popt_v("verbose", 'v',
+		  "verbose mode");
+  main_app.add_option(&popt_v);
 
   main_app.set_other_option_help("<filename>");
 
@@ -167,13 +182,19 @@ igugen(int argc,
       tmp_m <<= 1;
     }
   }
+  if ( popt_p.is_specified() ) {
+    p1 = popt_p.val();
+  }
+
+  bool s_mode = popt_s.is_specified();
+  bool verbose = popt_v.is_specified();
 
   Partitioner pt;
   const vector<const RegVect*>& vect_list = rv_mgr.vect_list();
   for ( ; ; ++ p1) {
     cout << " trying p = " << p1 << endl;
     bool found = false;
-#if 1
+#if 0
     SigFuncGen sfgen;
     sfgen.init(vect_list, var_list, p1, m, 0, 1);
 #else
@@ -181,11 +202,14 @@ igugen(int argc,
     sfgen.init(vect_list, var_list, p1, m);
 #endif
 
-    for (ymuint c = 0; !found && c < count_limit; ++ c) {
-      cout << "\r  " << setw(10) << c << " / " << count_limit;
-      cout.flush();
+    ymuint n_success = 0;
+    for (ymuint c = 0; c < count_limit; ++ c) {
+      if ( verbose ) {
+	cout << "\r  " << setw(10) << c << " / " << count_limit;
+	cout.flush();
+      }
       vector<const SigFunc*> sigfunc_list = sfgen.generate();
-      {
+      if ( verbose ) {
 	for (ymuint i = 0; i < m; ++ i) {
 	  const SigFunc* sf = sigfunc_list[i];
 	  double val = calc_val(vect_list, sf);
@@ -197,6 +221,7 @@ igugen(int argc,
       bool stat = pt.cf_partition(vect_list, sigfunc_list, block_map);
       if ( stat ) {
 	found = true;
+#if 0
 	// 検証する．
 	ymuint np = 1U << p1;
 	vector<vector<ymuint> > rmap(m);
@@ -212,15 +237,29 @@ igugen(int argc,
 	  }
 	  rmap[bid][idx] = true;
 	}
+#endif
       }
 
       for (ymuint i = 0; i < m; ++ i) {
 	delete sigfunc_list[i];
       }
+
+      if ( found ) {
+	if ( s_mode ) {
+	  ++ n_success;
+	}
+	else {
+	  break;
+	}
+      }
+
     }
-    cout << endl;
+    if ( verbose ) {
+      cout << endl;
+    }
 
     if ( found ) {
+      cout << "ratio = " << static_cast<double>(n_success) / static_cast<double>(count_limit) << endl;
       break;
     }
   }
