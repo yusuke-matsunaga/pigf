@@ -12,7 +12,7 @@
 #include "LxGen.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 /// @class Shift_LxGen Shift_LxGen.h "Shift_LxGen.h"
@@ -61,7 +61,6 @@ private:
 
 };
 
-
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF
 
 #endif // SHIFT_LXGEN_H

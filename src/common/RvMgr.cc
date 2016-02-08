@@ -12,8 +12,8 @@
 #include "Variable.h"
 #include "SigFunc.h"
 //#include "FuncVect.h"
-#include "YmUtils/HashFunc.h"
-#include "YmUtils/HashSet.h"
+#include "ym/HashFunc.h"
+#include "ym/HashSet.h"
 
 
 BEGIN_NAMESPACE_YM
@@ -34,7 +34,7 @@ HashFunc<nsIgf::RegVect*>
 
 END_NAMESPACE_YM
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 // クラス RvMgr
@@ -385,4 +385,4 @@ RegVect::dump(ostream& s) const
   s << endl;
 }
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF

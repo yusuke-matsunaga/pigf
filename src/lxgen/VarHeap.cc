@@ -10,7 +10,7 @@
 #include "VarHeap.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 // クラス VarHeap
@@ -155,4 +155,4 @@ VarHeap::print(ostream& s)
   s << endl;
 }
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF

@@ -16,7 +16,7 @@
 #include "Simple_LxGen.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 // @brief インスタンスを生成するクラスメソッド
 // @param[in] method アルゴリズム名
@@ -45,4 +45,4 @@ LxGen::new_obj(string method)
   return nullptr;
 }
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF

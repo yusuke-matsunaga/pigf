@@ -1,0 +1,17 @@
+﻿
+
+//////////////////////////////////////////////////////////////////////
+// バージョン変数の設定
+//////////////////////////////////////////////////////////////////////
+
+/// @brief プロジェクトの major バージョン
+#define IGF_VERSION_MAJIR @IGF_VERSION_MAJOR@
+
+/// @brief プロジェクトの minor バージョン
+#define IGF_VERSION_MINOR @IGF_VERSION_MINOR@
+
+/// @brief プロジェクトのバージョン
+#define IGF_VERSION @IGF_VERSION@
+
+/// @brief プロジェクトの名前空間
+#define IGF_NAMESPACE @IGF_NAMESPACE@

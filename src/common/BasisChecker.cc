@@ -11,7 +11,7 @@
 #include "Variable.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 // クラス BasisChecker
@@ -123,4 +123,4 @@ BasisChecker::check(const vector<Variable>& var_list)
   return true;
 }
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF

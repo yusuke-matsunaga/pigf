@@ -10,10 +10,10 @@
 
 
 #include "LxGen.h"
-#include "YmUtils/RandGen.h"
+#include "ym/RandGen.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 /// @class Greedy_LxGen Greedy_LxGen.h "Greedy_LxGen.h"
@@ -71,6 +71,6 @@ private:
 
 };
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF
 
 #endif // GREEDY_LXGEN_H

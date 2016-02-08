@@ -9,11 +9,11 @@
 /// All rights reserved.
 
 
-#include "igf_nsdef.h"
+#include "igf.h"
 #include "Variable.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 /// @class VarHeap VarHeap.h "VarHeap.h"
@@ -188,6 +188,6 @@ VarHeap::compare(const Node& node1,
   }
 }
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF
 
 #endif // VARHEAP_H

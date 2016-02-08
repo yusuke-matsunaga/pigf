@@ -10,20 +10,20 @@
 #include "RvMgr.h"
 #include "RegVect.h"
 #include "Variable.h"
-#include "RandHashGen.h"
+//#include "RandHashGen.h"
 #include "SigFunc.h"
-#include "IguGen.h"
+//#include "IguGen.h"
 #include "LxGen.h"
 #include "Partitioner.h"
 #include "SigFuncGen.h"
 #include "RandSigFuncGen.h"
 #include "VarPool.h"
-#include "YmUtils/PoptMainApp.h"
-#include "YmUtils/RandGen.h"
-#include "YmUtils/RandCombiGen.h"
+//#include "YmUtils/PoptMainApp.h"
+#include "ym/RandGen.h"
+#include "ym/RandCombiGen.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 BEGIN_NONAMESPACE
 
@@ -72,6 +72,15 @@ int
 igugen(int argc,
        const char** argv)
 {
+  vector<string> args;
+  string lx_str;
+  ymuint n_basis = 1000;
+  ymuint m = 1;
+  ymuint count_limit = 1000;
+  bool s_mode;
+  bool verbose;
+  int p_hint = 0;
+#if 0
   PoptMainApp main_app;
 
   // m オプション
@@ -115,11 +124,33 @@ igugen(int argc,
     return 1;
   }
 
-  vector<string> args;
-  ymuint n_args = main_app.get_args(args);
+  n_args = main_app.get_args(args);
   if ( n_args != 1 ) {
     main_app.usage(1);
   }
+
+  if ( popt_lx.is_specified() ) {
+    lx_str = popt_lx.val();
+  }
+  if ( popt_n.is_specified() ) {
+    n_basis = popt_n.val();
+  }
+  if ( popt_m.is_specified() ) {
+    m = popt_m.val();
+  }
+  if ( popt_l.is_specified() ) {
+    count_limit = popt_l.val();
+  }
+  if ( popt_s.is_specified() ) {
+    s_mode = true;
+  }
+  if ( popt_v.is_specified() ) {
+    verbose = true;
+  }
+  if ( popt_p.is_specified() ) {
+    p_hint = popt_p.val();
+  }
+#endif
 
   RvMgr rv_mgr;
 
@@ -139,13 +170,9 @@ igugen(int argc,
        << "# of index bits: " << rv_mgr.index_size() << endl;
 
   vector<Variable> var_list;
-  if ( popt_lx.is_specified() ) {
-    ymuint n = 1000;
-    if ( popt_n.is_specified() ) {
-      n = popt_n.val();
-    }
-    LxGen* lxgen = LxGen::new_obj(popt_lx.val());
-    lxgen->generate(rv_mgr.vect_list(), n, var_list);
+  if ( lx_str != string() ) {
+    LxGen* lxgen = LxGen::new_obj(lx_str);
+    lxgen->generate(rv_mgr.vect_list(), n_basis, var_list);
   }
   else {
     ymuint ni = rv_mgr.vect_size();
@@ -160,18 +187,6 @@ igugen(int argc,
 
   cout << "Phase-1 end (" << var_list.size() << ")" << endl;
 
-  ymuint m = 1;
-  if ( popt_m.is_specified() ) {
-    m = popt_m.val();
-  }
-
-  bool naive = popt_n.is_specified();
-
-  ymuint count_limit = 1000;
-  if ( popt_l.is_specified() ) {
-    count_limit = popt_l.val();
-  }
-
   ymuint n = rv_mgr.vect_size();
   ymuint p = rv_mgr.index_size();
 
@@ -182,12 +197,9 @@ igugen(int argc,
       tmp_m <<= 1;
     }
   }
-  if ( popt_p.is_specified() ) {
-    p1 = popt_p.val();
+  if ( p_hint > 0 ) {
+    p1 = p_hint;
   }
-
-  bool s_mode = popt_s.is_specified();
-  bool verbose = popt_v.is_specified();
 
   Partitioner pt;
   const vector<const RegVect*>& vect_list = rv_mgr.vect_list();
@@ -273,7 +285,7 @@ igugen(int argc,
   return 0;
 }
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF
 
 
 int

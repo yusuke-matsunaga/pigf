@@ -9,9 +9,9 @@
 /// All rights reserved.
 
 
-#include "igf_nsdef.h"
+#include "igf.h"
 #include "Variable.h"
-#include "YmUtils/HashSet.h"
+#include "ym/HashSet.h"
 
 BEGIN_NAMESPACE_YM
 
@@ -28,7 +28,7 @@ HashFunc<nsIgf::Variable>
 
 END_NAMESPACE_YM
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 /// @class VarPool VarPool.h "VarPool.h"
@@ -209,6 +209,6 @@ VarPool::compare(const Node& node1,
   }
 }
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF
 
 #endif // VARPOOL_H

@@ -12,7 +12,7 @@
 #include "MCMC_LxGen.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 /// @class MCMC3_LxGen MCMC3_LxGen.h "MCMC3_LxGen.h"
@@ -49,7 +49,7 @@ private:
 
 };
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF
 
 
 #endif // MCMC_LXGEN_H

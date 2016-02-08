@@ -12,7 +12,7 @@
 #include "RegVect.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 // クラス SigFunc
@@ -63,4 +63,4 @@ SigFunc::dump(ostream& s) const
   }
 }
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF

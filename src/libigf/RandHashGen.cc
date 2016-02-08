@@ -10,10 +10,10 @@
 #include "RandHashGen.h"
 #include "Variable.h"
 #include "SigFunc.h"
-#include "YmUtils/RandCombiGen.h"
+#include "ym/RandCombiGen.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 // クラス RandHashGen
@@ -80,4 +80,4 @@ RandHashGen::gen_func(ymuint input_num,
   return new SigFunc(var_list);
 }
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF

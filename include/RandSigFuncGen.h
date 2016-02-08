@@ -9,12 +9,12 @@
 /// All rights reserved.
 
 
-#include "igf_nsdef.h"
-#include "YmUtils/RandCombiGen.h"
-#include "YmUtils/RandGen.h"
+#include "igf.h"
+#include "ym/RandCombiGen.h"
+#include "ym/RandGen.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 /// @class RandSigFuncGen RandSigFuncGen.h "RandSigFuncGen.h"
@@ -78,6 +78,6 @@ private:
 
 };
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF
 
 #endif // RANDSIGFUNCGEN_H

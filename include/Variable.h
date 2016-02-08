@@ -9,10 +9,10 @@
 /// All rights reserved.
 
 
-#include "igf_nsdef.h"
+#include "igf.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 /// @class Variable Variable.h "Variable.h"
@@ -175,6 +175,6 @@ ostream&
 operator<<(ostream& s,
 	   const Variable& var);
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF
 
 #endif // VARIABLE_H

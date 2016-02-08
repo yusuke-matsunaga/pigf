@@ -11,7 +11,7 @@
 #include "RegVect.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 // クラス MCMC2_LxGen
@@ -52,4 +52,4 @@ MCMC2_LxGen::value(const Variable& var)
   }
 }
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF

@@ -9,10 +9,10 @@
 /// All rights reserved.
 
 
-#include "igf_nsdef.h"
+#include "igf.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 /// @class FuncVect FuncVect.h "FuncVect.h"
@@ -143,6 +143,6 @@ FuncVect::set_val(ymuint id,
   mVector[id] = val;
 }
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF
 
 #endif // FUNCVECT_H

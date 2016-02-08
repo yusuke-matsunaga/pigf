@@ -12,7 +12,7 @@
 #include "Variable.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 // クラス Simple_LxGen
@@ -156,4 +156,4 @@ Simple_LxGen::generate(const vector<const RegVect*>& rv_list,
   }
 }
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF

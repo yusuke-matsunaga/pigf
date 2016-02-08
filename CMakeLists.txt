@@ -12,9 +12,12 @@ set (CMAKE_CXX_STANDARD 11)
 # プロジェクト名，バージョンの設定
 # ===================================================================
 project (pigf)
-set (PIGF_VERSION_MAJOR 1)
-set (PIGF_VERSION_MINOR 0)
-set (PIGF_VERSION "${PIGF_VERSION_MAJOR}.${PIGF_VERSION_MINOR}")
+set (IGF_VERSION_MAJOR 1)
+set (IGF_VERSION_MINOR 0)
+set (IGF_VERSION "${IGF_VERSION_MAJOR}.${IGF_VERSION_MINOR}")
+
+# 名前空間
+set ( IGF_NAMESPACE "nsIgf" )
 
 
 # ===================================================================
@@ -36,8 +39,10 @@ set( Python_ADDITIONAL_VERSIONS 3.6 3.5 3.4 3.3 3.2 3.1 )
 include (FindPythonInterp)
 include (FindPythonLibs)
 
+include( UseCython )
+
 find_package(Gperftools)
-find_package(YmTools REQUIRED)
+
 
 include (ym_add_library)
 
@@ -58,21 +63,31 @@ enable_testing()
 
 
 # ===================================================================
-# サブディレクトリの設定
+# ヘッダファイルの生成
 # ===================================================================
 
-add_subdirectory (
-  gtest
+configure_file(
+  "${PROJECT_SOURCE_DIR}/etc/version_config.h.in"
+  "${PROJECT_BINARY_DIR}/version_config.h"
   )
+
 
 # ===================================================================
 # インクルードパスの設定
 # ===================================================================
 include_directories (
   ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_SOURCE_DIR}/ym-common/include
   ${PROJECT_BINARY_DIR}
-  ${YmTools_INCLUDE_DIRS}
   )
+
+
+# ===================================================================
+# サブディレクトリの設定
+# ===================================================================
+
+add_subdirectory ( ym-common )
+add_subdirectory ( gtest )
 
 
 # ===================================================================
@@ -119,7 +134,6 @@ set (libigf_SOURCES
 
 ym_add_library (libigf
   STATIC
-  ${libigf_SOURCES}
   ${common_SOURCES}
   ${lxgen_SOURCES}
   )
@@ -143,8 +157,7 @@ target_compile_definitions (igugen
 
 target_link_libraries(igugen
   libigf
-  ym_algo
-  ym_utils
+  ym_common
   )
 
 add_executable(lxgen
@@ -161,7 +174,7 @@ target_compile_definitions (lxgen
 
 target_link_libraries(lxgen
   libigf
-  ym_utils
+  ym_common
   )
 
 
@@ -184,8 +197,7 @@ target_compile_definitions (igugen_p
 
 target_link_libraries(igugen_p
   libigf_p
-  ym_algo_p
-  ym_utils_p
+  ym_common_p
   )
 
 
@@ -203,8 +215,7 @@ target_compile_options (igugen_d
 
 target_link_libraries(igugen_d
   libigf_d
-  ym_algo_d
-  ym_utils_d
+  ym_common_d
   )
 
 

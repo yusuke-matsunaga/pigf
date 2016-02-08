@@ -9,11 +9,11 @@
 /// All rights reserved.
 
 
-#include "igf_nsdef.h"
-#include "YmUtils/UnitAlloc.h"
+#include "igf.h"
+#include "ym/UnitAlloc.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 /// @class RvMgr RvMgr.h "RvMgr.h"
@@ -170,6 +170,6 @@ RvMgr::vect_list() const
 }
 
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF
 
 #endif // RVMGR_H

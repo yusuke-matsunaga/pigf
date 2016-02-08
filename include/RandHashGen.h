@@ -9,11 +9,11 @@
 /// All rights reserved.
 
 
-#include "igf_nsdef.h"
-#include "YmUtils/RandGen.h"
+#include "igf.h"
+#include "ym/RandGen.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 /// @class RandHashGen RandHashGen.h "RandHashGen.h"
@@ -55,6 +55,6 @@ private:
 
 };
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF
 
 #endif // RANDHASHGEN_H

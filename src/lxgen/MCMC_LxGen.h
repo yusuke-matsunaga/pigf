@@ -10,10 +10,10 @@
 
 
 #include "LxGen.h"
-#include "YmUtils/RandGen.h"
+#include "ym/RandGen.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 /// @class MCMC_LxGen MCMC_LxGen.h "MCMC_LxGen.h"
@@ -102,7 +102,6 @@ private:
 
 };
 
-END_NAMESPACE_YM_IGF
-
+END_NAMESPACE_IGF
 
 #endif // MCMC_LXGEN_H

@@ -11,7 +11,7 @@
 #include "RegVect.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 // クラス Variable
@@ -276,4 +276,4 @@ operator<<(ostream& s,
   return s;
 }
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF

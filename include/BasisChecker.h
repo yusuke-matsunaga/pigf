@@ -9,10 +9,10 @@
 /// All rights reserved.
 
 
-#include "igf_nsdef.h"
+#include "igf.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 /// @class BasisChecker BasisChecker.h "BasisChecker.h"
@@ -55,6 +55,6 @@ private:
 
 };
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF
 
 #endif // BASISCHECKER_H

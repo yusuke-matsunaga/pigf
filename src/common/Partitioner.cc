@@ -11,7 +11,7 @@
 #include "SigFunc.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
 // クラス Partitioner
@@ -137,4 +137,4 @@ Partitioner::cf_partition(const vector<const RegVect*>& vect_list,
   return true;
 }
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF
