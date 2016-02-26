@@ -43,8 +43,8 @@ include( UseCython )
 
 find_package(Gperftools)
 
-
-include (ym_add_library)
+include ( ym_init )
+include ( ym_add_library )
 
 
 # ===================================================================
@@ -145,6 +145,7 @@ ym_add_library (libigf
 
 add_executable(igugen
   ${igugen_SOURCES}
+  $<TARGET_OBJECTS:ym_common>
   )
 
 target_compile_options (igugen
@@ -157,11 +158,12 @@ target_compile_definitions (igugen
 
 target_link_libraries(igugen
   libigf
-  ym_common
+  ${YM_LIB_DEPENDS}
   )
 
 add_executable(lxgen
   src/igugen/lxgen.cc
+  $<TARGET_OBJECTS:ym_common>
   )
 
 target_compile_options (lxgen
@@ -174,7 +176,7 @@ target_compile_definitions (lxgen
 
 target_link_libraries(lxgen
   libigf
-  ym_common
+  ${YM_LIB_DEPENDS}
   )
 
 
@@ -185,6 +187,7 @@ target_link_libraries(lxgen
 
 add_executable(igugen_p
   ${igugen_SOURCES}
+  $<TARGET_OBJECTS:ym_common_p>
   )
 
 target_compile_options (igugen_p
@@ -197,7 +200,7 @@ target_compile_definitions (igugen_p
 
 target_link_libraries(igugen_p
   libigf_p
-  ym_common_p
+  ${YM_LIB_DEPENDS}
   )
 
 
@@ -207,6 +210,7 @@ target_link_libraries(igugen_p
 
 add_executable(igugen_d
   ${igugen_SOURCES}
+  $<TARGET_OBJECTS:ym_common_d>
   )
 
 target_compile_options (igugen_d
@@ -215,7 +219,7 @@ target_compile_options (igugen_d
 
 target_link_libraries(igugen_d
   libigf_d
-  ym_common_d
+  ${YM_LIB_DEPENDS}
   )
 
 
