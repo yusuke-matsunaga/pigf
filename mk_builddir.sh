@@ -73,14 +73,12 @@ done
 # ビルドディレクトリはなければ作る．
 test -d $builddir || mkdir -p $builddir
 
-# do_cmake.sh ファイルを作る．
-do_cmake="do_cmake.sh"
+# boot.sh ファイルを作る．
+boot="boot.sh"
 $SED -e s!___SRC_DIR___!$srcdir! \
      -e s!___INSTALL_DIR___!$installdir! \
-     -e s!___YMTOOLS_DIR___!$ymtoolsdir! \
-     -e s!___YMTCLPP_DIR___!$ymtclppdir! \
-     $srcdir/etc/${do_cmake}.in > $builddir/$do_cmake
-chmod +x $builddir/$do_cmake
+     $srcdir/etc/${boot}.in > $builddir/$boot
+chmod +x $builddir/$boot
 
 echo "Build directory setup completed."
-echo "Move to '$builddir', and execute './do_cmake.sh'"
+echo "Move to '$builddir', and execute './boot.sh'"

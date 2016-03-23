@@ -43,14 +43,14 @@ include( UseCython )
 
 find_package(Gperftools)
 
-include ( ym_init )
-include ( ym_add_library )
+include ( YmUtils )
+
+ym_init( "" )
 
 
 # ===================================================================
 # google-test は内蔵のものを使う．
 # ===================================================================
-include ( ym_use_gtest )
 ym_use_gtest ()
 
 
@@ -58,7 +58,6 @@ ym_use_gtest ()
 # CTest モジュールの読み込み
 # ===================================================================
 include (CTest)
-
 enable_testing()
 
 
@@ -123,6 +122,7 @@ set (libigf_SOURCES
   src/libigf/IGU.cc
   src/libigf/IguGen.cc
   src/libigf/RandHashGen.cc
+  src/libigf/RandSigFuncGen.cc
   src/libigf/SigFuncGen.cc
   src/libigf/RandSigFuncGen.cc
   )
@@ -132,8 +132,7 @@ set (libigf_SOURCES
 #  library ターゲットの設定
 # ===================================================================
 
-ym_add_library (libigf
-  STATIC
+ym_add_object_library (libigf
   ${common_SOURCES}
   ${lxgen_SOURCES}
   )
@@ -145,6 +144,7 @@ ym_add_library (libigf
 
 add_executable(igugen
   ${igugen_SOURCES}
+  $<TARGET_OBJECTS:libigf>
   $<TARGET_OBJECTS:ym_common>
   )
 
@@ -157,12 +157,12 @@ target_compile_definitions (igugen
   )
 
 target_link_libraries(igugen
-  libigf
   ${YM_LIB_DEPENDS}
   )
 
 add_executable(lxgen
   src/igugen/lxgen.cc
+  $<TARGET_OBJECTS:libigf>
   $<TARGET_OBJECTS:ym_common>
   )
 
@@ -175,7 +175,6 @@ target_compile_definitions (lxgen
   )
 
 target_link_libraries(lxgen
-  libigf
   ${YM_LIB_DEPENDS}
   )
 
@@ -187,6 +186,7 @@ target_link_libraries(lxgen
 
 add_executable(igugen_p
   ${igugen_SOURCES}
+  $<TARGET_OBJECTS:libigf_p>
   $<TARGET_OBJECTS:ym_common_p>
   )
 
@@ -199,7 +199,6 @@ target_compile_definitions (igugen_p
   )
 
 target_link_libraries(igugen_p
-  libigf_p
   ${YM_LIB_DEPENDS}
   )
 
@@ -210,6 +209,7 @@ target_link_libraries(igugen_p
 
 add_executable(igugen_d
   ${igugen_SOURCES}
+  $<TARGET_OBJECTS:libigf_d>
   $<TARGET_OBJECTS:ym_common_d>
   )
 
@@ -218,7 +218,6 @@ target_compile_options (igugen_d
   )
 
 target_link_libraries(igugen_d
-  libigf_d
   ${YM_LIB_DEPENDS}
   )
 

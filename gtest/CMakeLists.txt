@@ -30,6 +30,8 @@ set ( TEST_SOURCES
 
 add_executable ( libIgfTest
   ${TEST_SOURCES}
+  $<TARGET_OBJECTS:libigf_d>
+  $<TARGET_OBJECTS:ym_common_d>
   )
 
 target_compile_options ( libIgfTest
@@ -37,8 +39,6 @@ target_compile_options ( libIgfTest
   )
 
 target_link_libraries ( libIgfTest
-  libigf_d
-  ym_utils_d
   pthread
   ${GTEST_BOTH_LIBRARIES}
   )
