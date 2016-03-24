@@ -40,31 +40,18 @@ Simple_LxGen::generate(const vector<const RegVect*>& rv_list,
 		       vector<Variable>& var_list)
 {
   // 初期変数集合を作る．
-  // 基本的にはすべての変数が対象だが，
-  // 登録ベクタを区別しない変数は取り除く．
-  ymuint var_num = 0;
-  {
-    ASSERT_COND( !rv_list.empty() );
-    const RegVect* rv0 = rv_list[0];
-    var_num = rv0->size();
-  }
   vector<Variable> pvar_list;
-  var_list.reserve(var_num);
-  for (ymuint i = 0; i < var_num; ++ i) {
-    Variable var1(var_num, i);
-    double v = var1.value(rv_list);
-    if ( v > 0.0 ) {
-      pvar_list.push_back(var1);
-    }
-  }
+  get_primary_vars(rv_list, pvar_list);
 
   // 単純なランダムサンプリングで合成変数を作る．
+  // ただしもとの変数の数に応じてアルゴリズムを変える．
 
   ymuint nv = pvar_list.size();
   var_list.clear();
   var_list.reserve(req_num);
 
   if ( nv < 20 ) {
+    // 2^nv 通りのべき集合のなかから正確に req_num 個をランダムサンプリングする．
     ymuint np = 1U << nv;
     vector<ymuint> pat_list(np);
     for (ymuint i = 0; i < np; ++ i) {
@@ -96,6 +83,8 @@ Simple_LxGen::generate(const vector<const RegVect*>& rv_list,
     }
   }
   else if ( nv < 32 ) {
+    // 32 ビットの乱数を req_num 個生成し，対応する変数を作る．
+    // 場合によっては重複する場合がある．
     ymuint32 np = 1U << nv;
     for (ymuint i = 0; i < req_num; ++ i) {
       ymuint32 pat = mRandGen.int32() % np;
@@ -118,6 +107,8 @@ Simple_LxGen::generate(const vector<const RegVect*>& rv_list,
     }
   }
   else {
+    // nv ビットの乱数を req_num 個生成し，対応する変数を作る．
+    // 場合によっては重複する場合がある．
     for (ymuint i = 0; i < req_num; ++ i) {
       Variable var;
       bool first = true;

@@ -40,26 +40,11 @@ Greedy_LxGen::generate(const vector<const RegVect*>& rv_list,
 		    vector<Variable>& var_list)
 {
   // 初期変数集合を作る．
-  // 基本的にはすべての変数が対象だが，
-  // 登録ベクタを区別しない変数は取り除く．
-  ymuint var_num = 0;
-  {
-    ASSERT_COND( !rv_list.empty() );
-    const RegVect* rv0 = rv_list[0];
-    var_num = rv0->size();
-  }
   vector<Variable> pvar_list;
-  var_list.reserve(var_num);
-  for (ymuint i = 0; i < var_num; ++ i) {
-    Variable var1(var_num, i);
-    double v = var1.value(rv_list);
-    if ( v > 0.0 ) {
-      pvar_list.push_back(var1);
-    }
-  }
+  get_primary_vars(rv_list, pvar_list);
 
-  // 単純なランダムサンプリングで合成変数を作る．
-  // 重複チェックはしていない．
+  // 最初のシードをランダムに作り，
+  // 評価値の最も高くなる変数と合成してゆく．
   var_list.clear();
   var_list.reserve(req_num);
   for (ymuint i = 0; i < req_num; ++ i) {
@@ -72,6 +57,7 @@ Greedy_LxGen::generate(const vector<const RegVect*>& rv_list,
     Variable var1 = choose_var(tmp_list);
 
     // ランダムに変数を足していって価値の最も高いものを返す．
+    // いわゆる山登り法
     double max_val = var1.value(rv_list);
     Variable max_var = var1;
     while ( !tmp_list.empty() ) {

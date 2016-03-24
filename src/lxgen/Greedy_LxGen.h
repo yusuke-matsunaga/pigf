@@ -9,7 +9,7 @@
 /// All rights reserved.
 
 
-#include "LxGen.h"
+#include "LxGenBase.h"
 #include "ym/RandGen.h"
 
 
@@ -20,7 +20,7 @@ BEGIN_NAMESPACE_IGF
 /// @brief 線形変換用の合成変数を生成するクラス
 //////////////////////////////////////////////////////////////////////
 class Greedy_LxGen :
-  public LxGen
+  public LxGenBase
 {
 public:
 

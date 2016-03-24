@@ -112,6 +112,7 @@ set (lxgen_SOURCES
   src/lxgen/MCMC2_LxGen.cc
   src/lxgen/MCMC3_LxGen.cc
   src/lxgen/LxGen.cc
+  src/lxgen/LxGenBase.cc
   src/lxgen/Shift_LxGen.cc
   src/lxgen/Simple_LxGen.cc
   src/lxgen/VarHeap.cc
