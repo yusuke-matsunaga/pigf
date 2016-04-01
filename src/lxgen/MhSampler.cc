@@ -1,28 +1,28 @@
 
-/// @file MH.cc
-/// @brief MH の実装ファイル
+/// @file MhSampler.cc
+/// @brief MhSampler の実装ファイル
 /// @author Yusuke Matsunaga (松永 裕介)
 ///
 /// Copyright (C) 2016 Yusuke Matsunaga
 /// All rights reserved.
 
-#include "MH.h"
-#include "McState.h"
+#include "MhSampler.h"
+#include "MhState.h"
 
 
 BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
-// クラス MH
+// クラス MhSampler
 //////////////////////////////////////////////////////////////////////
 
 // @brief コンストラクタ
-MH::MH()
+MhSampler::MhSampler()
 {
 }
 
 // @brief デストラクタ
-MH::~MH()
+MhSampler::~MhSampler()
 {
 }
 
@@ -32,10 +32,10 @@ MH::~MH()
 // @param[in] interval サンプリングの間隔
 // @param[in] sample_count 総サンプル数
 void
-MH::sampling(McState& state,
-	     ymuint warmup_count,
-	     ymuint interval,
-	     ymuint sample_count)
+MhSampler::sampling(MhState& state,
+		    ymuint warmup_count,
+		    ymuint interval,
+		    ymuint sample_count)
 {
   // 初期化
   state.init();
@@ -68,7 +68,7 @@ MH::sampling(McState& state,
 //
 // 次の状態候補を生成して規則にしたがって accept/reject する．
 void
-MH::one_step(McState& state)
+MhSampler::one_step(MhState& state)
 {
   // ランダムに近傍に遷移する．
   state.random_move();

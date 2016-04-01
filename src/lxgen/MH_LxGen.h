@@ -1,33 +1,36 @@
-#ifndef MCSTATE_H
-#define MCSTATE_H
+#ifndef MH_LXGEN_H
+#define MH_LXGEN_H
 
-/// @file McState.h
-/// @brief McState のヘッダファイル
+/// @file MH_LxGen.h
+/// @brief MH_LxGen のヘッダファイル
 /// @author Yusuke Matsunaga (松永 裕介)
 ///
 /// Copyright (C) 2016 Yusuke Matsunaga
 /// All rights reserved.
 
 
-#include "igf.h"
+#include "LxGen.h"
+#include "MhSampler.h"
+#include "LxState.h"
 
 
 BEGIN_NAMESPACE_IGF
 
 //////////////////////////////////////////////////////////////////////
-/// @class McState McState.h "McState.h"
-/// @brief Markov chain の状態を表す基底クラス
-///
-/// MH で用いる．
-/// 順数仮想関数のみの純粋仮想クラス
+/// @class MH_LxGen MH_LxGen.h "MH_LxGen.h"
+/// @brief MhSampler を用いた LxGen
 //////////////////////////////////////////////////////////////////////
-class McState
+class MH_LxGen :
+  public LxGen
 {
 public:
 
+  /// @brief コンストラクタ
+  MH_LxGen();
+
   /// @brief デストラクタ
   virtual
-  ~McState() { }
+  ~MH_LxGen();
 
 
 public:
@@ -35,30 +38,14 @@ public:
   // 外部インターフェイス
   //////////////////////////////////////////////////////////////////////
 
-  /// @brief 初期化する．
-  virtual
+  /// @brief 合成変数の生成を行う．
+  /// @param[in] rv_list 登録ベクタのリスト
+  /// @param[in] req_num 生成する変数の数
+  /// @param[out] var_list 生成された変数を格納するリスト
   void
-  init() = 0;
-
-  /// @brief ランダムに近傍に遷移する．
-  virtual
-  void
-  random_move() = 0;
-
-  /// @brief 直前の遷移を取り消す．
-  virtual
-  void
-  reset_move() = 0;
-
-  /// @brief 現在の状態の評価値を返す．
-  virtual
-  double
-  value() = 0;
-
-  /// @brief 現在の状態を記録する．
-  virtual
-  void
-  record() = 0;
+  generate(const vector<const RegVect*>& rv_list,
+	   ymuint req_num,
+	   vector<Variable>& var_list);
 
 
 private:
@@ -77,4 +64,4 @@ private:
 
 END_NAMESPACE_IGF
 
-#endif // MCSTATE_H
+#endif // MH_LXGEN_H

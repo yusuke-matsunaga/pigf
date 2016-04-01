@@ -1,8 +1,8 @@
-#ifndef MH_H
-#define MH_H
+#ifndef MHSAMPLER_H
+#define MHSAMPLER_H
 
-/// @file MH.h
-/// @brief MH のヘッダファイル
+/// @file MhSampler.h
+/// @brief MhSampler のヘッダファイル
 /// @author Yusuke Matsunaga (松永 裕介)
 ///
 /// Copyright (C) 2016 Yusuke Matsunaga
@@ -15,21 +15,21 @@
 
 BEGIN_NAMESPACE_IGF
 
-class McState;
+class MhState;
 
 //////////////////////////////////////////////////////////////////////
-/// @class MH MH.h "MH.h"
+/// @class MhSampler MhSampler.h "MhSampler.h"
 /// @brief Metropolis-Hastings 法を行うクラス
 //////////////////////////////////////////////////////////////////////
-class MH
+class MhSampler
 {
 public:
 
   /// @brief コンストラクタ
-  MH();
+  MhSampler();
 
   /// @brief デストラクタ
-  ~MH();
+  ~MhSampler();
 
 
 public:
@@ -45,7 +45,7 @@ public:
   ///
   /// 結果は state.record() で記録される．
   void
-  sampling(McState& state,
+  sampling(MhState& state,
 	   ymuint warmup,
 	   ymuint interval,
 	   ymuint sample_count);
@@ -61,7 +61,7 @@ private:
   ///
   /// 次の状態候補を生成して規則にしたがって accept/reject する．
   void
-  one_step(McState& state);
+  one_step(MhState& state);
 
 
 private:
@@ -79,4 +79,4 @@ private:
 
 END_NAMESPACE_IGF
 
-#endif // MH_H
+#endif // MHSAMPLER_H

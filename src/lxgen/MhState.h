@@ -1,0 +1,80 @@
+#ifndef MHSTATE_H
+#define MHSTATE_H
+
+/// @file MhState.h
+/// @brief MhState のヘッダファイル
+/// @author Yusuke Matsunaga (松永 裕介)
+///
+/// Copyright (C) 2016 Yusuke Matsunaga
+/// All rights reserved.
+
+
+#include "igf.h"
+
+
+BEGIN_NAMESPACE_IGF
+
+//////////////////////////////////////////////////////////////////////
+/// @class MhState MhState.h "MhState.h"
+/// @brief Markov chain の状態を表す基底クラス
+///
+/// MhSampler で用いる．
+/// 順数仮想関数のみの純粋仮想クラス
+//////////////////////////////////////////////////////////////////////
+class MhState
+{
+public:
+
+  /// @brief デストラクタ
+  virtual
+  ~MhState() { }
+
+
+public:
+  //////////////////////////////////////////////////////////////////////
+  // 外部インターフェイス
+  //////////////////////////////////////////////////////////////////////
+
+  /// @brief 初期化する．
+  virtual
+  void
+  init() = 0;
+
+  /// @brief ランダムに近傍に遷移する．
+  virtual
+  void
+  random_move() = 0;
+
+  /// @brief 直前の遷移を取り消す．
+  virtual
+  void
+  reset_move() = 0;
+
+  /// @brief 現在の状態の評価値を返す．
+  virtual
+  double
+  value() = 0;
+
+  /// @brief 現在の状態を記録する．
+  virtual
+  void
+  record() = 0;
+
+
+private:
+  //////////////////////////////////////////////////////////////////////
+  // 内部で用いられる関数
+  //////////////////////////////////////////////////////////////////////
+
+
+private:
+  //////////////////////////////////////////////////////////////////////
+  // データメンバ
+  //////////////////////////////////////////////////////////////////////
+
+
+};
+
+END_NAMESPACE_IGF
+
+#endif // MHSTATE_H

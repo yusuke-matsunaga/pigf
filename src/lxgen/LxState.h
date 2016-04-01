@@ -9,7 +9,7 @@
 /// All rights reserved.
 
 
-#include "McState.h"
+#include "MhState.h"
 #include "Variable.h"
 #include "ym/RandGen.h"
 
@@ -20,12 +20,12 @@ class VarPool;
 
 //////////////////////////////////////////////////////////////////////
 /// @class LxState LxState.h "LxState.h"
-/// @brief LxGen で用いる McState の継承クラス
+/// @brief LxGen で用いる MhState の継承クラス
 ///
 /// 具体的には変数番号の部分集合が状態となる．
 //////////////////////////////////////////////////////////////////////
 class LxState :
-  public McState
+  public MhState
 {
 public:
 

@@ -117,8 +117,9 @@ set (lxgen_SOURCES
   src/lxgen/Simple_LxGen.cc
   src/lxgen/VarHeap.cc
 
-  src/lxgen/MH.cc
+  src/lxgen/MhSampler.cc
   src/lxgen/LxState.cc
+  src/lxgen/MH_LxGen.cc
   )
 
 set (libigf_SOURCES
