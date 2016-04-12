@@ -1,0 +1,66 @@
+#ifndef BASEGENBASE_H
+#define BASEGENBASE_H
+
+/// @file BaseGenBase.h
+/// @brief BaseGenBase のヘッダファイル
+/// @author Yusuke Matsunaga (松永 裕介)
+///
+/// Copyright (C) 2016 Yusuke Matsunaga
+/// All rights reserved.
+
+
+#include "BaseGen.h"
+
+
+BEGIN_NAMESPACE_IGF
+
+//////////////////////////////////////////////////////////////////////
+/// @class BaseGenBase BaseGenBase.h "BaseGenBase.h"
+/// @brief BaseGen の実装の基底クラス
+//////////////////////////////////////////////////////////////////////
+class BaseGenBase :
+  public BaseGen
+{
+public:
+
+  /// @brief コンストラクタ
+  BaseGenBase();
+
+  /// @brief デストラクタ
+  virtual
+  ~BaseGenBase();
+
+
+public:
+  //////////////////////////////////////////////////////////////////////
+  // 外部インターフェイス
+  //////////////////////////////////////////////////////////////////////
+
+
+protected:
+  //////////////////////////////////////////////////////////////////////
+  // 内部で用いられる関数
+  //////////////////////////////////////////////////////////////////////
+
+  /// @brief 初期変数集合を求める．
+  /// @param[in] rv_list 登録ベクタのリスト
+  /// @param[out] var_list 変数を格納するリスト
+  ///
+  /// 基本的にはすべての変数が対象だが，
+  /// 登録ベクタを区別しない変数は取り除く．
+  void
+  get_primary_vars(const vector<const RegVect*>& rv_list,
+		   vector<Variable>& var_list);
+
+
+private:
+  //////////////////////////////////////////////////////////////////////
+  // データメンバ
+  //////////////////////////////////////////////////////////////////////
+
+
+};
+
+END_NAMESPACE_IGF
+
+#endif // BASEGENBASE_H

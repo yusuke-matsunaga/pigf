@@ -1,0 +1,66 @@
+#ifndef SHIFT_BASEGEN_H
+#define SHIFT_BASEGEN_H
+
+/// @file Shift_BaseGen.h
+/// @brief Shift_BaseGen のヘッダファイル
+/// @author Yusuke Matsunaga (松永 裕介)
+///
+/// Copyright (C) 2016 Yusuke Matsunaga
+/// All rights reserved.
+
+
+#include "BaseGen.h"
+
+
+BEGIN_NAMESPACE_IGF
+
+//////////////////////////////////////////////////////////////////////
+/// @class Shift_BaseGen Shift_BaseGen.h "Shift_BaseGen.h"
+/// @brief 線形変換用の合成変数を生成するクラス
+//////////////////////////////////////////////////////////////////////
+class Shift_BaseGen :
+  public BaseGen
+{
+public:
+
+  /// @brief コンストラクタ
+  Shift_BaseGen();
+
+  /// @brief デストラクタ
+  virtual
+  ~Shift_BaseGen();
+
+
+public:
+  //////////////////////////////////////////////////////////////////////
+  // 外部インターフェイス
+  //////////////////////////////////////////////////////////////////////
+
+  /// @brief 合成変数の生成を行う．
+  /// @param[in] rv_list 登録ベクタのリスト
+  /// @param[in] req_num 生成する変数の数
+  /// @param[out] var_list 生成された変数を格納するリスト
+  virtual
+  void
+  generate(const vector<const RegVect*>& rv_list,
+	   ymuint req_num,
+	   vector<Variable>& var_list);
+
+
+private:
+  //////////////////////////////////////////////////////////////////////
+  // 内部で用いられる関数
+  //////////////////////////////////////////////////////////////////////
+
+
+private:
+  //////////////////////////////////////////////////////////////////////
+  // データメンバ
+  //////////////////////////////////////////////////////////////////////
+
+
+};
+
+END_NAMESPACE_IGF
+
+#endif // SHIFT_BASEGEN_H

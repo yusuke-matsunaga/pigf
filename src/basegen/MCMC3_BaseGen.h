@@ -1,0 +1,55 @@
+#ifndef MCMC3_BASEGEN_H
+#define MCMC3_BASEGEN_H
+
+/// @file MCMC3_BaseGen.h
+/// @brief MCMC3_BaseGen のヘッダファイル
+/// @author Yusuke Matsunaga (松永 裕介)
+///
+/// Copyright (C) 2016 Yusuke Matsunaga
+/// All rights reserved.
+
+
+#include "MCMC_BaseGen.h"
+
+
+BEGIN_NAMESPACE_IGF
+
+//////////////////////////////////////////////////////////////////////
+/// @class MCMC3_BaseGen MCMC3_BaseGen.h "MCMC3_BaseGen.h"
+/// @brief 線形変換用の合成変数を生成するクラス
+//////////////////////////////////////////////////////////////////////
+class MCMC3_BaseGen :
+  public MCMC_BaseGen
+{
+public:
+
+  /// @brief コンストラクタ
+  MCMC3_BaseGen();
+
+  /// @brief デストラクタ
+  virtual
+  ~MCMC3_BaseGen();
+
+
+private:
+  //////////////////////////////////////////////////////////////////////
+  // 内部で用いられる関数
+  //////////////////////////////////////////////////////////////////////
+
+  /// @brief 変数の価値を計算する．
+  virtual
+  double
+  value(const Variable& var);
+
+
+private:
+  //////////////////////////////////////////////////////////////////////
+  // データメンバ
+  //////////////////////////////////////////////////////////////////////
+
+};
+
+END_NAMESPACE_IGF
+
+
+#endif // MCMC_BASEGEN_H

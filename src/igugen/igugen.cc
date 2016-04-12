@@ -13,7 +13,7 @@
 //#include "RandHashGen.h"
 #include "SigFunc.h"
 //#include "IguGen.h"
-#include "LxGen.h"
+#include "BaseGen.h"
 #include "Partitioner.h"
 #include "SigFuncGen.h"
 #include "RandSigFuncGen.h"
@@ -171,8 +171,8 @@ igugen(int argc,
 
   vector<Variable> var_list;
   if ( lx_str != string() ) {
-    LxGen* lxgen = LxGen::new_obj(lx_str);
-    lxgen->generate(rv_mgr.vect_list(), n_basis, var_list);
+    BaseGen* basegen = BaseGen::new_obj(lx_str);
+    basegen->generate(rv_mgr.vect_list(), n_basis, var_list);
   }
   else {
     ymuint ni = rv_mgr.vect_size();

@@ -11,7 +11,7 @@
 #include "Variable.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 // コンストラクタのテスト
 TEST(VariableTest, constructor)
@@ -115,4 +115,4 @@ TEST(VariableTest, large_compose)
   }
 }
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF

@@ -13,10 +13,10 @@
 #include "LxGen.h"
 
 #include "VarPool.h"
-#include "YmUtils/PoptMainApp.h"
+#include "ym/PoptMainApp.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 struct Lt
 {
@@ -115,7 +115,7 @@ lxgen(int argc,
   return 0;
 }
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF
 
 
 int

@@ -122,6 +122,27 @@ set (lxgen_SOURCES
   src/lxgen/MH_LxGen.cc
   )
 
+set (basegen_SOURCES
+  src/basegen/Greedy_BaseGen.cc
+  src/basegen/MCMC_BaseGen.cc
+  src/basegen/MCMC2_BaseGen.cc
+  src/basegen/MCMC3_BaseGen.cc
+  src/basegen/BaseGen.cc
+  src/basegen/BaseGenBase.cc
+  src/basegen/Shift_BaseGen.cc
+  src/basegen/Simple_BaseGen.cc
+  src/basegen/VarHeap.cc
+
+  src/basegen/BaseState.cc
+  src/basegen/MhSampler.cc
+  src/basegen/MH_BaseGen.cc
+  )
+
+set (sfgen_SOURCES
+  src/sfgen/SigFuncGen.cc
+  src/sfgen/RandSigFuncGen.cc
+  )
+
 set (libigf_SOURCES
   src/libigf/phf/PhfGraph.cc
   src/libigf/IGU.cc
@@ -139,7 +160,8 @@ set (libigf_SOURCES
 
 ym_add_object_library (libigf
   ${common_SOURCES}
-  ${lxgen_SOURCES}
+  ${basegen_SOURCES}
+  ${sfgen_SOURCES}
   )
 
 
@@ -162,24 +184,6 @@ target_compile_definitions (igugen
   )
 
 target_link_libraries(igugen
-  ${YM_LIB_DEPENDS}
-  )
-
-add_executable(lxgen
-  src/igugen/lxgen.cc
-  $<TARGET_OBJECTS:libigf>
-  $<TARGET_OBJECTS:ym_common>
-  )
-
-target_compile_options (lxgen
-  PRIVATE "-O3"
-  )
-
-target_compile_definitions (lxgen
-  PRIVATE "-DNDEBUG"
-  )
-
-target_link_libraries(lxgen
   ${YM_LIB_DEPENDS}
   )
 

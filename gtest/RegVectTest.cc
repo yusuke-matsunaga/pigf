@@ -12,7 +12,7 @@
 #include "RegVect.h"
 
 
-BEGIN_NAMESPACE_YM_IGF
+BEGIN_NAMESPACE_IGF
 
 const char* src_data[] = {
   "0001001101111000",
@@ -494,4 +494,4 @@ TEST(RegVectTest, read_data)
   }
 }
 
-END_NAMESPACE_YM_IGF
+END_NAMESPACE_IGF
