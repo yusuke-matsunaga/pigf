@@ -8,7 +8,6 @@
 
 
 #include "SigFuncGen.h"
-#include "BasisChecker.h"
 #include "RegVect.h"
 #include "SigFunc.h"
 #include "Variable.h"

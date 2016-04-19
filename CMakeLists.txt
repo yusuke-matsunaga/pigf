@@ -98,7 +98,6 @@ set (igugen_SOURCES
   )
 
 set (common_SOURCES
-  src/common/BasisChecker.cc
   src/common/Partitioner.cc
   src/common/RvMgr.cc
   src/common/SigFunc.cc
@@ -143,6 +142,11 @@ set (sfgen_SOURCES
   src/sfgen/RandSigFuncGen.cc
   )
 
+set (remgen_SOURCES
+  src/remgen/BasisChecker.cc
+  src/remgen/RemGen.cc
+  )
+
 set (libigf_SOURCES
   src/libigf/phf/PhfGraph.cc
   src/libigf/IGU.cc
@@ -162,6 +166,7 @@ ym_add_object_library (libigf
   ${common_SOURCES}
   ${basegen_SOURCES}
   ${sfgen_SOURCES}
+  ${remgen_SOURCES}
   )
 
 

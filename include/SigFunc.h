@@ -41,6 +41,11 @@ public:
   ymuint
   output_width() const;
 
+  /// @brief 個々の出力に対応した変数を返す．
+  /// @param[in] pos 出力の番号 ( 0 <= pos < output_width() )
+  Variable
+  output(ymuint pos) const;
+
   /// @brief 関数値を求める．
   /// @param[in] rv 登録ベクタ
   ymuint

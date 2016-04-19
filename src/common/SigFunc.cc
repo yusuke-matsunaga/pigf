@@ -37,6 +37,15 @@ SigFunc::output_width() const
   return mVarList.size();
 }
 
+// @brief 個々の出力に対応した変数を返す．
+// @param[in] pos 出力の番号 ( 0 <= pos < output_width() )
+Variable
+SigFunc::output(ymuint pos) const
+{
+  ASSERT_COND( pos < output_width() );
+  return mVarList[pos];
+}
+
 // @brief 関数値を求める．
 // @param[in] rv 登録ベクタ
 ymuint
